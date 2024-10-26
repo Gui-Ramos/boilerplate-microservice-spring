@@ -11,3 +11,4 @@ Boilerplate design for microservices architecture with Spring
 - 🧪 JUnit
 - 🏛️ JPA
 - 🚀 Gradle
+- Spotless
