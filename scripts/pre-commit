@@ -1,0 +1,42 @@
+#!/bin/sh
+
+echo "*****Running unit tests******"
+
+stash_commit="$(git stash create)"
+git reset --hard
+
+# run spotless apply
+./gradlew spotlessApply
+
+status=$?
+
+if [ "$status" = 0 ] ; then
+    echo "Static analysis found no problems."
+    # Add staged file changes to git
+    for file in $stagedFiles; do
+      if test -f "$file"; then
+        git add $file
+      fi
+    done
+else
+    echo "*********************************************************"
+    echo "       ********************************************      "
+    echo 1>&2 "Spotless Apply found violations it could not fix."
+    echo "Run spotless apply in your terminal and fix the issues before trying to commit again."
+    echo "       ********************************************      "
+    echo "*********************************************************"
+    #Exit
+    exit $status
+fi
+
+./gradlew test
+
+status=$?
+
+if [[ -n "${stash_commit}" ]]
+then git stash apply "${stash_commit}"
+fi
+
+echo "*****Done with unit tests******"
+
+exit $status

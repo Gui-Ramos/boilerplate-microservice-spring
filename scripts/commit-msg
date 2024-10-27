@@ -1,0 +1,10 @@
+#!/bin/sh
+
+echo "***** Conventional Commits Validation ******"
+
+commit_message=$(cat $1)
+
+if ! echo "$commit_message" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|chore)(\([a-zA-Z0-9_-]+\))?: .+'; then
+    echo "A mensagem de commit deve seguir o formato: tipo(scope): mensagem"
+    exit 1
+fi

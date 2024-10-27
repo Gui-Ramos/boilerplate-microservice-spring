@@ -35,6 +35,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'com.diffplug.spotless:spotless-lib:2.45.0'
+	implementation 'org.postgresql:postgresql:42.7.2'
 	liquibaseRuntime 'org.liquibase:liquibase-core:4.23.0'
 	liquibaseRuntime 'info.picocli:picocli:4.7.4'
 	liquibaseRuntime 'org.postgresql:postgresql:42.7.2'
@@ -83,4 +84,15 @@ spotless {
 		trimTrailingWhitespace()
 		endWithNewline()
 	}
+}
+
+
+tasks.register('installLocalGitHook', Copy) {
+	from 'scripts'
+	into '.git/hooks'
+	fileMode 0775
+}
+
+build {
+	dependsOn 'installLocalGitHook'
 }
