@@ -93,6 +93,6 @@ tasks.register('installLocalGitHook', Copy) {
 	fileMode 0775
 }
 
-build {
+compileJava {
 	dependsOn 'installLocalGitHook'
 }

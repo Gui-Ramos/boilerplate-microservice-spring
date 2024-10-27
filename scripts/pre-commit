@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo "*****Verifing Changes In JAVA Files******"
+
 # Obtém a lista de arquivos staged que foram modificados
 stagedFiles=$(git diff --name-only --cached)
 
@@ -17,7 +19,7 @@ fi
 echo "*****Running unit tests******"
 
 stash_commit="$(git stash create)"
-git reset --hard
+#git reset --hard
 
 
 # run spotless apply
