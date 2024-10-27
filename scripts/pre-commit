@@ -1,9 +1,24 @@
 #!/bin/sh
 
+# Obtém a lista de arquivos staged que foram modificados
+stagedFiles=$(git diff --name-only --cached)
+
+# Filtra apenas os arquivos .java e build.gradle
+filteredFiles=$(echo "$stagedFiles" | grep -E '\.java$|build\.gradle$')
+
+# Verifica se há arquivos relevantes alterados
+if [ -z "$filteredFiles" ]; then
+    echo "No Java files or build.gradle changes detected. Skipping tests."
+    exit 0
+fi
+
+
+
 echo "*****Running unit tests******"
 
 stash_commit="$(git stash create)"
 git reset --hard
+
 
 # run spotless apply
 ./gradlew spotlessApply
