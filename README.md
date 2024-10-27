@@ -12,3 +12,5 @@ Boilerplate design for microservices architecture with Spring
 - 🏛️ JPA
 - 🚀 Gradle
 - Spotless
+- Pre-Commit
+- Conventional Commits
