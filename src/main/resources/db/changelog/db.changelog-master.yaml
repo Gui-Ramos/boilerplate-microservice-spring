@@ -1,0 +1,214 @@
+databaseChangeLog:
+- changeSet:
+    id: 1730039958588-1
+    author: guilh (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: aluno_id
+            type: UUID
+        - column:
+            constraints:
+              nullable: false
+            name: matriculas_id
+            type: UUID
+        tableName: aluno_matriculas
+- changeSet:
+    id: 1730039958588-2
+    author: guilh (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: matriculas_id
+        constraintName: ukem9kxfjwel8ncamtvb21k4xm6
+        tableName: aluno_matriculas
+- changeSet:
+    id: 1730039958588-3
+    author: guilh (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: agendamento_pkey
+            name: id
+            type: UUID
+        - column:
+            name: created_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: update_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: data
+            type: date
+        - column:
+            name: hora_fim
+            type: time(6) WITHOUT TIME ZONE
+        - column:
+            name: hora_inicio
+            type: time(6) WITHOUT TIME ZONE
+        - column:
+            name: sala
+            type: UUID
+        tableName: agendamento
+- changeSet:
+    id: 1730039958588-4
+    author: guilh (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: aluno_pkey
+            name: id
+            type: UUID
+        - column:
+            constraints:
+              nullable: false
+            name: created_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: updated_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: address
+            type: VARCHAR(255)
+        - column:
+            name: address_number
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: age
+            type: INTEGER
+        - column:
+            constraints:
+              nullable: false
+            name: birth_date
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: city
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        - column:
+            name: neighborhood
+            type: VARCHAR(255)
+        tableName: aluno
+- changeSet:
+    id: 1730039958588-5
+    author: guilh (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: materia_pkey
+            name: id
+            type: UUID
+        - column:
+            constraints:
+              nullable: false
+            name: created_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: updated_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: nome
+            type: VARCHAR(200)
+        tableName: materia
+- changeSet:
+    id: 1730039958588-6
+    author: guilh (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: matricula_pkey
+            name: id
+            type: UUID
+        - column:
+            constraints:
+              nullable: false
+            name: created_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: updated_at
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: escola_id
+            type: UUID
+        - column:
+            name: aluno_id
+            type: UUID
+        tableName: matricula
+- changeSet:
+    id: 1730039958588-7
+    author: guilh (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: aluno_id
+        baseTableName: aluno_matriculas
+        constraintName: fkltk3i7gwkr6xxwxg98319aa84
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: aluno
+        validate: true
+- changeSet:
+    id: 1730039958588-8
+    author: guilh (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: aluno_id
+        baseTableName: matricula
+        constraintName: fksmkrefmwkwfyod36k45jf1rr5
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: aluno
+        validate: true
+- changeSet:
+    id: 1730039958588-9
+    author: guilh (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: matriculas_id
+        baseTableName: aluno_matriculas
+        constraintName: fkt8rdvapxges0o6tsubgkjkc65
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: matricula
+        validate: true
+
