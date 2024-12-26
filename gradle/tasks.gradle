@@ -39,6 +39,7 @@ tasks.register('verify') {
     dependsOn attachSources, attachJavadoc
 }
 
+
 tasks.build.dependsOn verify
 
 // Definindo o comportamento de publicação para artefatos automaticamente ao realizar o build
