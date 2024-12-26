@@ -1,0 +1,15 @@
+static def getCommitMessages() {
+    def commits = 'git log $(git describe --tags --abbrev=0)..HEAD --pretty=format:%s'.execute().text.trim().split('\n')
+    return commits
+}
+static def determineReleaseScopeFromCommits() {
+    def messages = getCommitMessages()
+
+    if (messages.any { it.contains('BREAKING CHANGE') || it.contains('!') }) {
+        return "major"
+    } else if (messages.any { it.startsWith('feat:') }) {
+        return "minor"
+    } else {
+        return "patch"
+    }
+}

@@ -1,0 +1,45 @@
+apply from: 'gradle/git-utils.gradle'
+
+tasks.named('test') {
+    outputs.dir snippetsDir
+    useJUnitPlatform()
+}
+
+tasks.named('asciidoctor') {
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+tasks.register('installLocalGitHook', Copy) {
+    from 'scripts'
+    into '.git/hooks'
+    fileMode 0775
+}
+
+tasks.named("final") {
+    doFirst {
+        def scope = determineReleaseScopeFromCommits()
+        project.ext.set("release.scope", scope)
+        println "Definindo o escopo de lançamento como: $scope"
+    }
+}
+
+// Adicionando tasks para o equivalente ao maven-source-plugin e maven-javadoc-plugin
+tasks.register('attachSources', Jar) {
+    from sourceSets.main.allSource
+    archiveBaseName = archivesBaseName
+}
+
+tasks.register('attachJavadoc', Jar) {
+    from javadoc
+    archiveBaseName = archivesBaseName
+}
+
+tasks.register('verify') {
+    dependsOn attachSources, attachJavadoc
+}
+
+tasks.build.dependsOn verify
+
+// Definindo o comportamento de publicação para artefatos automaticamente ao realizar o build
+tasks.publish.dependsOn verify
