@@ -42,10 +42,11 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.GPG_SIGNING_KEY }}
-      - name: Set version
-        run: mvn versions:set -DnewVersion=${{ github.event.release.tag_name }}
+      # Incrementar patch e gerar snapshot
+      - name: Increment patch and generate snapshot
+        run: ./gradlew devSnapshot
       - name: Publish package
-        run: mvn -P release --batch-mode deploy -DskipTests
+        run: mvn deploy -DskipTests
         env:
           MAVEN_USERNAME: ${{ secrets.CENTRAL_TOKEN_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.CENTRAL_TOKEN_PASSWORD }}
