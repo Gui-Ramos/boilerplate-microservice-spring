@@ -1,0 +1,81 @@
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+liquibase {
+    activities {
+        main {
+            changeLogFile 'src/main/resources/db/changelog/db.changelog-master.yaml'
+            classpath 'src/main/resources'
+            referenceUrl 'hibernate:spring:com.microservice.boilerplate.model?dialect=org.hibernate.dialect.PostgreSQLDialect'
+            url 'jdbc:postgresql://localhost:5433/postgres'
+            username 'postgres'
+            password 'admin'
+            driver 'org.postgresql.Driver'
+        }
+    }
+    runList = "main"
+}
+
+spotless {
+    java {
+        target fileTree('.') {
+            include '**/*.java'
+            exclude '**/build/**', '**/build-*/**'
+        }
+        toggleOffOn()
+        palantirJavaFormat()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+
+
+
+
+compileJava {
+    dependsOn 'installLocalGitHook'
+}
+
+
+java {
+    withSourcesJar() // Inclui o código-fonte no pacote
+    withJavadocJar() // Inclui o Javadoc no pacote
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name = 'central'
+            url = uri('https://repo.maven.apache.org/maven2') // URL do repositório Maven Central
+            credentials {
+                username = project.findProperty('mavenUsername') ?: System.getenv('MAVEN_USERNAME')
+                password = project.findProperty('mavenPassword') ?: System.getenv('MAVEN_PASSWORD')
+            }
+        }
+    }
+}
+
+signing {
+    useGpgCmd()
+    sign publishing.publications.mavenJava
+}
