@@ -27,9 +27,9 @@ jobs:
 
       - name: Give execute permission to gradlew
         run: chmod +x ./gradlew  # Garantindo permissão de execução para o gradlew
-
+      # Incrementar patch e gerar snapshot
       - name: Build with Gradle
-        run: ./gradlew build -x test
+        run: ./gradlew devSnapshot -x test
 
       # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
       # the publishing section of your build.gradle
@@ -42,9 +42,6 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.GPG_SIGNING_KEY }}
-      # Incrementar patch e gerar snapshot
-      - name: Increment patch and generate snapshot
-        run: ./gradlew devSnapshot
       - name: Publish package
         run: mvn deploy -DskipTests
         env:
