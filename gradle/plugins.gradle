@@ -65,11 +65,11 @@ publishing {
     }
     repositories {
         maven {
-            name = 'central'
-            url = uri('https://repo.maven.apache.org/maven2') // URL do repositório Maven Central
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/Gui-Ramos/boilerplate-microservice-spring")
             credentials {
-                username = project.findProperty('mavenUsername') ?: System.getenv('MAVEN_USERNAME')
-                password = project.findProperty('mavenPassword') ?: System.getenv('MAVEN_PASSWORD')
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
             }
         }
     }
