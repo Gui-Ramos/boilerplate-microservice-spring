@@ -75,7 +75,7 @@ publishing {
     }
 }
 
-signing {
-    useGpgCmd()
-    sign publishing.publications.mavenJava
-}
+//signing {
+//    useGpgCmd()
+//    sign publishing.publications.mavenJava
+//}
