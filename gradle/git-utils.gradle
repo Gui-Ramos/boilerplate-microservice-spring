@@ -1,5 +1,6 @@
 static def getCommitMessages() {
-    def commits = 'git log $(git describe --tags --abbrev=0)..HEAD --pretty=format:%s'.execute().text.trim().split('\n')
+    def commits = 'git log -1 --pretty=%B'.execute().text.trim().split('\n')
+    println commits
     return commits
 }
 static def determineReleaseScopeFromCommits() {
