@@ -74,3 +74,8 @@ publishing {
         }
     }
 }
+
+nebulaRelease {
+    Set<String> releaseBranchPatterns = [/(?:(?:bugfix|feature|feat|fix|hotfix|release)(?:-|\/))?(.+)/] as Set
+    addReleaseBranchPattern(releaseBranchPatterns)
+}
