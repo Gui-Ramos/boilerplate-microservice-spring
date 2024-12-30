@@ -22,6 +22,7 @@ tasks.named("final") {
         project.ext.set("release.scope", scope)
         println "Definindo o escopo de lançamento como: $scope"
     }
+    branchPatterns = ['master', 'HEAD', 'main', '(release(-|/))?\\d+(\\.\\d+)?\\.x', 'v?\\d+\\.\\d+\\.\\d+', 'feature/.*']
 }
 
 // Adicionando tasks para o equivalente ao maven-source-plugin e maven-javadoc-plugin
