@@ -76,7 +76,6 @@ publishing {
 }
 
 reckon {
-    defaultInferredScope = 'patch'
     stages 'beta', 'rc', 'final'
     scopeCalc = calcScopeFromProp()
     stageCalc = calcStageFromProp()
