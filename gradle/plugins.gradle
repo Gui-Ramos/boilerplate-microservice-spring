@@ -75,7 +75,9 @@ publishing {
     }
 }
 
-nebulaRelease {
-    String releaseBranchPatterns = /(?:(?:bugfix|feature|feat|fix|hotfix|release)(?:-|\/))?(.+)/
-    addReleaseBranchPattern(releaseBranchPatterns)
+reckon {
+    defaultInferredScope = 'patch'
+    stages 'beta', 'rc', 'final'
+    scopeCalc = calcScopeFromProp()
+    stageCalc = calcStageFromProp()
 }

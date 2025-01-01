@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Obtém a mensagem do último commit
+LAST_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+
+# Define o escopo com base na mensagem do commit
+if echo "$LAST_COMMIT_MESSAGE" | grep -q "BREAKING CHANGE"; then
+  SCOPE=major
+elif echo "$LAST_COMMIT_MESSAGE" | grep -E -q '^(feat|feat!)'; then
+  SCOPE=minor
+elif echo "$LAST_COMMIT_MESSAGE" | grep -E -q '^(fix|fix!)'; then
+  SCOPE=patch
+else
+  SCOPE=patch
+fi
+
+# Exibe o escopo detectado (para depuração)
+echo "Determined scope: $SCOPE"
+
+# Executa o Gradle com o escopo detectado
+./gradlew clean build reckonTagPush -Preckon.scope=$SCOPE -Preckon.stage=beta
