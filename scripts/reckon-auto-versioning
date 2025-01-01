@@ -18,4 +18,4 @@ fi
 echo "Determined scope: $SCOPE"
 
 # Executa o Gradle com o escopo detectado
-./gradlew build -Preckon.scope=$SCOPE -Preckon.stage=beta -x test
+./gradlew build -Preckon.scope=$SCOPE -Preckon.stage=beta -x test --stacktrace --info
