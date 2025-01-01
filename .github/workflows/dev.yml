@@ -1,9 +1,9 @@
 name: Publish Boilerplate Package in Maven Central Repository
 
 on:
-  pull_request:
+  push:
     branches:
-      - main  # Quando o PR for para a branch 'dev'
+      - main
 
 jobs:
   build:
