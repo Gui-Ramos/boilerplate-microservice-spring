@@ -22,24 +22,6 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
 #          settings-path: ${{ github.workspace }} # location for the settings.xml file
 
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # Garante o histórico completo
-
-      - name: Force clean repository
-        run: |
-          git reset --hard
-          git clean -fdx
-          git status
-          git log -n 5
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4 # v4.0.0
-
-      - name: Give execute permission to gradlew
-        run: chmod +x ./gradlew  # Garantindo permissão de execução para o gradlew
-      # Incrementar patch e gerar snapshot
       - name: Build with Gradle
         run: bash ./scripts/reckon-auto-versioning
         env:
