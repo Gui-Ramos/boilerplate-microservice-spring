@@ -29,7 +29,7 @@ jobs:
         run: chmod +x ./gradlew  # Garantindo permissão de execução para o gradlew
       # Incrementar patch e gerar snapshot
       - name: Build with Gradle
-        run: ./gradlew devSnapshot -x test
+        run: bash ./scripts/reckon-auto-versioning
 
       # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
       # the publishing section of your build.gradle

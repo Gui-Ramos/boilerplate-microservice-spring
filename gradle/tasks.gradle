@@ -16,14 +16,6 @@ tasks.register('installLocalGitHook', Copy) {
     fileMode 0775
 }
 
-tasks.named("final") {
-    doFirst {
-        def scope = determineReleaseScopeFromCommits()
-        project.ext.set("release.scope", scope)
-        println "Definindo o escopo de lançamento como: $scope"
-    }
-}
-
 // Adicionando tasks para o equivalente ao maven-source-plugin e maven-javadoc-plugin
 tasks.register('attachSources', Jar) {
     from sourceSets.main.allSource
@@ -41,6 +33,3 @@ tasks.register('verify') {
 
 
 tasks.build.dependsOn verify
-
-// Definindo o comportamento de publicação para artefatos automaticamente ao realizar o build
-//tasks.publish.dependsOn verify

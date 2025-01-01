@@ -75,7 +75,9 @@ publishing {
     }
 }
 
-//signing {
-//    useGpgCmd()
-//    sign publishing.publications.mavenJava
-//}
+reckon {
+    defaultInferredScope = 'patch'
+    stages 'beta', 'rc', 'final'
+    scopeCalc = calcScopeFromProp()
+    stageCalc = calcStageFromProp()
+}
