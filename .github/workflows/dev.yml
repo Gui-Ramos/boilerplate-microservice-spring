@@ -25,6 +25,6 @@ jobs:
         run: bash ./scripts/reckon-auto-versioning
 
       - name: Publish to GitHub Packages
-        run: ./gradlew publish -Preckon.scope=$SCOPE -Preckon.stage=beta -x test
+        run: ./gradlew publish reckonTagPush -Preckon.scope=$SCOPE -Preckon.stage=beta -x test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
