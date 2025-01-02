@@ -32,7 +32,7 @@ jobs:
 #          echo "https://${{ secrets.GITHUB_TOKEN }}@github.com" > ~/.git-credentials
 
       - name: Publish to GitHub Packages
-        run: ./gradlew publish reckonTagCreate -Preckon.scope=$SCOPE -Preckon.stage=beta
+        run: ./gradlew publish reckonTagPush -Preckon.scope=$SCOPE -Preckon.stage=beta
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
 
