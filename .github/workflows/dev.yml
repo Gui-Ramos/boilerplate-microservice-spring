@@ -30,7 +30,7 @@ jobs:
       - name: Publish to GitHub Packages
         run: |          
           ./gradlew publish reckonTagCreate -Preckon.scope=$SCOPE -Preckon.stage=beta \
-          -Dorg.ajoberstar.grgit.auth.username=${{ secrets.GITHUB_ACTOR }}
+          -Dorg.ajoberstar.grgit.auth.username=${{ GITHUB_ACTOR }}
         env:
           GRGIT_USER: ${{ secrets.GITHUB_TOKEN }}
 
