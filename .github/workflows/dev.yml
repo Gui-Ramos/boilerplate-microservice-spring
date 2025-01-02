@@ -25,16 +25,14 @@ jobs:
         run: bash ./scripts/reckon-auto-versioning
 
       - name: Publish to GitHub Packages
-        run: echo ${{ secrets.GITHUB_ACTOR }}
+        run: echo "Actor ${{ github.actor }}"
 
       - name: Publish to GitHub Packages
         run: |          
-          ./gradlew publish reckonTagCreate -Preckon.scope=$SCOPE -Preckon.stage=beta -x test 
-
-      - name: Push the created tag to GitHub
-        run: |
-          TAG=$(git describe --tags --abbrev=0)
-          git push origin $TAG
+          ./gradlew publish reckonTagCreate -Preckon.scope=$SCOPE -Preckon.stage=beta \
+          -Dorg.ajoberstar.grgit.auth.username=${{ secrets.GITHUB_ACTOR }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GRGIT_USER: ${{ secrets.GITHUB_TOKEN }}
+
+
         
