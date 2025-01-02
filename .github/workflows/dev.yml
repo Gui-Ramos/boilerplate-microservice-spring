@@ -24,9 +24,9 @@ jobs:
 
       - name: Determine version scope
         run: bash ./scripts/reckon-auto-versioning
-
-      - name: Build and generate version with Gradle
-        run: ./gradlew build -Preckon.scope=$SCOPE -Preckon.stage=beta -x test
+#
+#      - name: Build and generate version with Gradle
+#        run: ./gradlew build
 
       # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
       # the publishing section of your build.gradle
@@ -44,6 +44,6 @@ jobs:
 #        env:
 #          GPG_PRIVATE_KEY: ${{ secrets.GPG_SIGNING_KEY }}
       - name: Publish to GitHub Packages
+        run: ./gradlew publish -Preckon.scope=$SCOPE -Preckon.stage=beta -x test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
-        run: ./gradlew publish
