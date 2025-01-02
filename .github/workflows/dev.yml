@@ -31,7 +31,7 @@ jobs:
         run: |          
           ./gradlew publish reckonTagCreate -Preckon.scope=$SCOPE -Preckon.stage=beta \
           -Dorg.ajoberstar.grgit.auth.username=${{ github.actor }}
-          -Dorg.ajoberstar.grgit.auth.password=${{ secrets.GITHUB_TOKEN }}
+          -Dorg.ajoberstar.grgit.auth.password=12345
         env:
           GRGIT_USER: ${{ secrets.GITHUB_TOKEN }}
 
