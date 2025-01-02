@@ -26,7 +26,9 @@ jobs:
         run: bash ./scripts/reckon-auto-versioning
 
       - name: Current Tag
-        run: git tag
+        run: |
+          git fetch --tags
+          git tag
 
       - name: Publish to GitHub Packages
         run: ./gradlew publish reckonTagPush -Preckon.scope=$SCOPE -Preckon.stage=beta
