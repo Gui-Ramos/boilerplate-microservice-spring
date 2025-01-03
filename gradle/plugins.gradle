@@ -58,6 +58,7 @@ java {
 }
 
 reckon {
+    defaultInferredScope = 'patch'
     stages 'beta', 'rc', 'final'
     scopeCalc = calcScopeFromProp()
     stageCalc = calcStageFromProp()
@@ -69,7 +70,7 @@ publishing {
             from components.java
         }
     }
-    version = reckon.getVersion().get()
+    version = reckon.version.get()
     repositories {
         maven {
             name = "GitHubPackages"
