@@ -33,7 +33,11 @@ jobs:
       - name: Current Tag
         run: |
           git fetch --tags
+
+      - name: List tags and commits
+        run: |
           git tag
+          git log --oneline
 
       - name: Publish to GitHub Packages
         run: ./gradlew clean publish reckonTagPush -Preckon.scope=$SCOPE -Preckon.stage=beta
