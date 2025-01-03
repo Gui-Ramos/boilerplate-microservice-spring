@@ -70,7 +70,7 @@ publishing {
             from components.java
         }
     }
-    version = reckon.version.get()
+    version = project.version
     repositories {
         maven {
             name = "GitHubPackages"
