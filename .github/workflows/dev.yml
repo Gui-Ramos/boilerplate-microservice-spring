@@ -17,7 +17,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Baixa todo o histórico de commits e tags
+          fetch-depth: 0
 
       - uses: actions/checkout@v4
       - name: Set up JDK 21
@@ -32,12 +32,7 @@ jobs:
 
       - name: Current Tag
         run: |
-          git fetch --tags
-
-      - name: List tags and commits
-        run: |
-          git tag
-          git log --oneline --all
+          git fetch --tags   
 
       - name: Fetch complete history
         run: |

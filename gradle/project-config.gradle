@@ -1,3 +1,2 @@
 group = 'com.microservice'
-//version = reckon.getVersion().get()
 archivesBaseName='boilerplate'
