@@ -57,6 +57,12 @@ java {
     withJavadocJar() // Inclui o Javadoc no pacote
 }
 
+reckon {
+    stages 'beta', 'rc', 'final'
+    scopeCalc = calcScopeFromProp()
+    stageCalc = calcStageFromProp()
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -74,10 +80,4 @@ publishing {
             }
         }
     }
-}
-
-reckon {
-    stages 'beta', 'rc', 'final'
-    scopeCalc = calcScopeFromProp()
-    stageCalc = calcStageFromProp()
 }
