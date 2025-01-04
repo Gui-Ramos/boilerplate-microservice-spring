@@ -1,16 +1,17 @@
 #!/bin/bash
 
 # Obtém a mensagem do último commit
-LAST_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+LAST_COMMIT_MESSAGE=$(git log $(git describe --tags --abbrev=0)..HEAD --pretty=format:"%s")
 
-# Define o escopo com base na mensagem do commit
+
+# Define o escopo com base na mensagem do commit'
 if echo "$LAST_COMMIT_MESSAGE" | grep -q "BREAKING CHANGE"; then
   SCOPE=major
 elif echo "$LAST_COMMIT_MESSAGE" | grep -E -q '^.*!'; then
   SCOPE=major
-elif echo "$LAST_COMMIT_MESSAGE" | grep -E -q '^(feat|feat!)'; then
+elif echo "$LAST_COMMIT_MESSAGE" | grep -E -q '^(feat)'; then
   SCOPE=minor
-elif echo "$LAST_COMMIT_MESSAGE" | grep -E -q '^(fix|fix!)'; then
+elif echo "$LAST_COMMIT_MESSAGE" | grep -E -q '^(fix)'; then
   SCOPE=patch
 else
   SCOPE=patch
