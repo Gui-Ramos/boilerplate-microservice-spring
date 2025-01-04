@@ -48,6 +48,11 @@ jobs:
       - name: Install Conventional Changelog
         run: npm install -g conventional-changelog-cli
 
+      - name: Configure Git Author
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Generate Changelog
         run: |
           npx conventional-changelog -p angular -i CHANGELOG.md -s -r 0

@@ -6,6 +6,8 @@ LAST_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
 # Define o escopo com base na mensagem do commit
 if echo "$LAST_COMMIT_MESSAGE" | grep -q "BREAKING CHANGE"; then
   SCOPE=major
+elif echo "$LAST_COMMIT_MESSAGE" | grep -E -q '^.*!'; then
+  SCOPE=major
 elif echo "$LAST_COMMIT_MESSAGE" | grep -E -q '^(feat|feat!)'; then
   SCOPE=minor
 elif echo "$LAST_COMMIT_MESSAGE" | grep -E -q '^(fix|fix!)'; then
@@ -19,3 +21,4 @@ echo "Determined scope: $SCOPE"
 
 # Exporta o escopo para ser usado no pipeline
 echo "SCOPE=$SCOPE" >> $GITHUB_ENV
+
