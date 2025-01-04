@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Arquivo da mensagem do commit
+COMMIT_MSG_FILE=$1
+COMMIT_SOURCE=$2
+
+# Modificar apenas commits de merge
+if [ "$COMMIT_SOURCE" = "merge" ]; then
+    # Pega o nome do branch remoto/merge
+    BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+
+    # Cria a mensagem aderente ao padrão Conventional Commits
+    echo "chore(merge): merge branch '$BRANCH_NAME'" > "$COMMIT_MSG_FILE"
+fi
