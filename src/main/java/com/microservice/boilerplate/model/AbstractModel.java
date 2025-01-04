@@ -14,11 +14,14 @@ public class AbstractModel {
     private UUID id;
 
     @Version
+    @Transient
     private Long version;
 
     @CreatedDate
+    @Column(name = "created_at")
     private LocalDate createdAt;
 
     @LastModifiedDate
+    @Column(name = "update_at")
     private LocalDate updatedAt;
 }
