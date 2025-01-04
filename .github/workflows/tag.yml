@@ -3,7 +3,7 @@ name: Generate Release Notes
 on:
   push:
     tags:
-      - '*' # Gatilho para tags de versão (ex.: v1.0.0)
+      - '[0-9]+.[0-9]+.[0-9]+*' # Gatilho para tags de versão (ex.: 1.0.0-beta.1)
 
 jobs:
   generate-release:
