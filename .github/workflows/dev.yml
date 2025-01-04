@@ -45,4 +45,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
 
 
-        
+      - name: Install Conventional Changelog
+        run: npm install -g conventional-changelog-cli
+
+      - name: Generate Changelog
+        run: |
+          npx conventional-changelog -p angular -i CHANGELOG.md -s -r 0
+          git add CHANGELOG.md
+          git commit -m "docs: update changelog"
+          git push origin main
