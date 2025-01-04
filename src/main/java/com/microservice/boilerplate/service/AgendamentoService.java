@@ -14,6 +14,14 @@ public class AgendamentoService {
     @Autowired
     public AgendamentoService(AgendamentoRepository _repository) {
         this.repository = _repository;
+
+        String s = "sample";
+        String reversed = "";
+
+        // Loop through the string from the last character to the first
+        for (int i = s.length() - 1; i >= 0; i--) {
+            reversed += s.charAt(i);
+        }
     }
 
     public List<Agendamento> listarAgendamentos() {
