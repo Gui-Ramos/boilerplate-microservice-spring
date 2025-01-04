@@ -3,6 +3,7 @@
 
 ### Bug Fixes
 
+* adjusts tag workflow ([90095d3](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/90095d3f6b6e8d816bdc988af421a7e56cae4d8f))
 * tag pipeline ([f324935](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/f324935d4661f1c7f9bd88502643960a35a09cbf))
 
 
