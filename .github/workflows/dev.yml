@@ -55,6 +55,8 @@ jobs:
 
       - name: Generate Changelog
         run: |
+          git show-ref
+          git fetch origin
           npx conventional-changelog -p angular -i CHANGELOG.md -s -r 0
           git add CHANGELOG.md
           git commit -m "docs: update changelog"
