@@ -4,6 +4,7 @@
 ### Bug Fixes
 
 * adjusts tag workflow ([90095d3](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/90095d3f6b6e8d816bdc988af421a7e56cae4d8f))
+* include generate release step in dev workflow ([a9d22da](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/a9d22da8a342ddbf1adf44b28bea6da72670847e))
 * tag pipeline ([f324935](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/f324935d4661f1c7f9bd88502643960a35a09cbf))
 
 
