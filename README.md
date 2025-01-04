@@ -14,3 +14,5 @@ Boilerplate design for microservices architecture with Spring
 - Spotless
 - Pre-Commit
 - Conventional Commits
+- Reckon to Auto Versioning
+- Aspect to Log in and out of applications methods
