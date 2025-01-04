@@ -4,7 +4,17 @@ echo "***** Conventional Commits Validation ******"
 
 commit_message=$(cat $1)
 
-if ! echo "$commit_message" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|chore)(\([a-zA-Z0-9_-]+\))?: .+'; then
-    echo "A mensagem de commit deve seguir o formato: tipo(scope): mensagem"
-    exit 1
+if echo "$commit_message" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|chore)(\([a-zA-Z0-9_-]+\))?: .+'; then
+    echo "Mensagem de commit válida (Conventional Commit)."
+    exit 0
 fi
+
+# Permitir mensagens automáticas de merge
+if echo "$commit_message" | grep -qE '^Merge (remote-tracking branch|branch)'; then
+    echo "Mensagem de merge detectada. Validação ignorada."
+    exit 0
+fi
+
+# Se nenhuma das condições for atendida, falha na validação
+echo "A mensagem de commit deve seguir o formato: tipo(scope): mensagem ou ser uma mensagem automática de merge."
+exit 1
