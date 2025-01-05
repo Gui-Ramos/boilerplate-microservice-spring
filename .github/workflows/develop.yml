@@ -40,10 +40,26 @@ jobs:
           git fetch --unshallow
           git fetch --tags
 
-      - name: Determine version scope
-        run: bash ./scripts/reckon-auto-versioning
+      # Instala semantic-release
+      - name: Install semantic-release
+        run: |
+          npm install -g semantic-release @semantic-release/git @semantic-release/github @semantic-release/changelog
+
+      # Executa o semantic-release para gerar a versão beta
+      - name: Run semantic-release to determine beta version
+        id: semantic_release
+        run: |
+          npx semantic-release --dry-run --branches develop --pre-release beta
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            # Extraímos a versão gerada pelo semantic-release
+
+      - name: Set version for Gradle
+        run: |
+          VERSION=$(npx semantic-release --dry-run --branches develop --pre-release beta | grep 'nextRelease' -A 1 | tail -n 1 | sed 's/.*"\(.*\)"/\1/')
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Publish to GitHub Packages
-        run: ./gradlew clean publish reckonTagPush -Preckon.scope=$SCOPE -Preckon.stage=beta
+        run: ./gradlew clean publish reckonTagPush -Preckon.version=$VERSION
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
