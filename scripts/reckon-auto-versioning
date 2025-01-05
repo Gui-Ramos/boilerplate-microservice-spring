@@ -4,6 +4,7 @@
 LAST_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
 
 # Obtém o nome da branch atual
+
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 echo "Current branch: $CURRENT_BRANCH"
 
