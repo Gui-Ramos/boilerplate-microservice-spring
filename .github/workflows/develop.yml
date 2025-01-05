@@ -27,9 +27,6 @@ jobs:
           distribution: 'corretto'
           server-id: github
 
-      - name: Determine version scope
-        run: bash ./scripts/reckon-auto-versioning
-
       - name: Download Tags Locally
         run: |
           git fetch --tags   
@@ -42,7 +39,9 @@ jobs:
         run: |
           git fetch --unshallow
           git fetch --tags
-          
+
+      - name: Determine version scope
+        run: bash ./scripts/reckon-auto-versioning
 
       - name: Publish to GitHub Packages
         run: ./gradlew clean publish reckonTagPush -Preckon.scope=$SCOPE -Preckon.stage=beta
