@@ -38,6 +38,7 @@ jobs:
         run: |
           git fetch --unshallow
           git fetch --tags
+          
 
       - name: Publish to GitHub Packages
         run: ./gradlew clean publish reckonTagPush -Preckon.scope=$SCOPE -Preckon.stage=beta
