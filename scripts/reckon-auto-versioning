@@ -8,7 +8,8 @@ echo "Current branch: $CURRENT_BRANCH"
 echo "Fetching updates from origin..."
 git reset --hard origin/$CURRENT_BRANCH
 git pull origin $CURRENT_BRANCH
-git fetch --all --tags
+git fetch --unshallow
+git fetch --tags
 
 # Obter histórico de commits baseado na branch
 if [ "$CURRENT_BRANCH" = "develop" ]; then
