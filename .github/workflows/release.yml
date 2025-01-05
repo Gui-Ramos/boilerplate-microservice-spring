@@ -30,7 +30,8 @@ jobs:
       - name: Fetch complete history
         run: |
           git pull
-          git fetch origin
+          git fetch origin          
+          
 
       - name: Determine version scope
         run: bash ./scripts/reckon-auto-versioning

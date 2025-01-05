@@ -7,10 +7,12 @@ echo "Current branch: $CURRENT_BRANCH"
 # Atualizar todas as branches locais com as remotas
 echo "Fetching updates from origin..."
 git fetch --all
+git fetch --unshallow
+git fetch --tags
 
 # Resetar a branch local para garantir sincronização com a remota
-echo "Resetting local branch to match origin..."
-git reset --hard origin/$CURRENT_BRANCH
+#echo "Resetting local branch to match origin..."
+#git reset --hard origin/$CURRENT_BRANCH
 
 # Obter histórico de commits baseado na branch
 if [ "$CURRENT_BRANCH" = "develop" ]; then
