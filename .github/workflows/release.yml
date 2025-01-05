@@ -27,16 +27,11 @@ jobs:
           distribution: 'corretto'
           server-id: github
 
-      - name: Current Tag
-        run: |
-          git fetch --tags   
-
       - name: Fetch complete history
         run: |
           git pull
-          git fetch origin
-          git fetch --unshallow
-          git fetch --tags
+          git fetch origin          
+          
 
       - name: Determine version scope
         run: bash ./scripts/reckon-auto-versioning
