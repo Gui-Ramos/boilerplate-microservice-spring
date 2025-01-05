@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Identificar a branch atual
+# Identify Current Branch
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 echo "Current branch: $CURRENT_BRANCH"
 
