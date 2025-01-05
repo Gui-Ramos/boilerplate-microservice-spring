@@ -33,6 +33,7 @@ jobs:
 
       - name: Fetch complete history
         run: |
+          git pull
           git fetch origin
           git fetch --unshallow
           git fetch --tags
