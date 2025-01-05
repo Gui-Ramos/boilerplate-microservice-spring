@@ -7,8 +7,14 @@ LAST_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 echo "Current branch: $CURRENT_BRANCH"
 
-# Obtém a última tag
-LAST_TAG=$(git describe --tags --abbrev=0)
+# Tenta obter a última tag
+LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null)
+
+# Se não houver tag, utiliza o primeiro commit
+if [ -z "$LAST_TAG" ]; then
+  echo "No tags found. Using the first commit."
+  LAST_TAG=$(git rev-list --max-parents=0 HEAD)
+fi
 
 # Obtém os commits desde a última tag
 COMMITS_SINCE_LAST_TAG=$(git log $LAST_TAG..HEAD --oneline)
