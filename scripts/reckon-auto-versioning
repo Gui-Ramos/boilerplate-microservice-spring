@@ -7,7 +7,6 @@ echo "Current branch: $CURRENT_BRANCH"
 # Atualizar todas as branches locais com as remotas
 echo "Fetching updates from origin..."
 git fetch --all --tags
-git fetch --unshallow || echo "Repository is not shallow."
 git reset --hard origin/$CURRENT_BRANCH
 git pull origin $CURRENT_BRANCH
 
