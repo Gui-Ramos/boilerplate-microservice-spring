@@ -6,9 +6,9 @@ echo "Current branch: $CURRENT_BRANCH"
 
 # Atualizar todas as branches locais com as remotas
 echo "Fetching updates from origin..."
-git fetch --all --tags
 git reset --hard origin/$CURRENT_BRANCH
 git pull origin $CURRENT_BRANCH
+git fetch --all --tags
 
 # Obter histórico de commits baseado na branch
 if [ "$CURRENT_BRANCH" = "develop" ]; then
