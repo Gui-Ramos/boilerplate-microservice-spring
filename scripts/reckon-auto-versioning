@@ -1,8 +1,10 @@
 #!/bin/bash
 
 # Obtém a mensagem do último commit
+git fetch origin
 LAST_COMMIT_MESSAGE=$(git log $(git describe --tags --abbrev=0)..HEAD --pretty=format:"%s")
 
+echo $LAST_COMMIT_MESSAGE
 
 # Define o escopo com base na mensagem do commit'
 if echo "$LAST_COMMIT_MESSAGE" | grep -q "BREAKING CHANGE"; then
