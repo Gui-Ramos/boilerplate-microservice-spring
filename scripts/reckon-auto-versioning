@@ -40,5 +40,6 @@ fi
 # Exibe o escopo detectado (para depuração)
 echo "Determined scope: $SCOPE"
 
+
 # Exporta o escopo para ser usado no pipeline
 echo "SCOPE=$SCOPE" >> $GITHUB_ENV
