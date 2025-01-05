@@ -6,7 +6,6 @@ echo "Current branch: $CURRENT_BRANCH"
 
 # Atualizar todas as branches locais com as remotas
 echo "Fetching updates from origin..."
-git reset --hard origin/$CURRENT_BRANCH
 git pull origin $CURRENT_BRANCH
 git fetch --unshallow
 git fetch --tags
