@@ -2,7 +2,17 @@
 
 # Obtém a mensagem do último commit
 git fetch origin
-LAST_COMMIT_MESSAGE=$(git log $(git describe --tags --abbrev=0)..HEAD --pretty=format:"%s")
+
+# Verifica se existem tags
+LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "no-tag")
+
+if [ "$LAST_TAG" = "no-tag" ]; then
+  echo "No tags found. Using fallback."
+  LAST_COMMIT_MESSAGE=$(git log --pretty=format:"%s")
+else
+  LAST_COMMIT_MESSAGE=$(git log ${LAST_TAG}..HEAD --pretty=format:"%s")
+fi
+
 
 echo $LAST_COMMIT_MESSAGE
 
