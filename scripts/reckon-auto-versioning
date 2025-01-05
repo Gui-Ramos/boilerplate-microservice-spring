@@ -25,10 +25,14 @@ if [ "$CURRENT_BRANCH" = "develop" ]; then
 
 elif [ "$CURRENT_BRANCH" = "release" ]; then
   echo "Analyzing commits on release branch..."
-  git pull origin release
-  BASE_COMMIT=$(git merge-base origin/develop HEAD)
-  echo "Base commit between develop and release: $BASE_COMMIT"
-  COMMITS=$(git log ${BASE_COMMIT}..HEAD --pretty=format:"%s" | tr '\n' '; ')
+  LAST_TAG=$(git describe --tags --abbrev=0 origin/release 2>/dev/null || echo "")
+  if [ -z "$LAST_TAG" ]; then
+    echo "No tags found on release branch. Listing all commits."
+    COMMITS=$(git log origin/release --merges --pretty=format:"%s" | tr '\n' '; ')
+  else
+    echo "Last tag on release: $LAST_TAG"
+    COMMITS=$(git log ${LAST_TAG}..origin/release --merges --pretty=format:"%s" | tr '\n' '; ')
+  fi
 
 elif [ "$CURRENT_BRANCH" = "main" ]; then
   echo "Analyzing commits on main branch..."
