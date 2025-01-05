@@ -1,8 +1,8 @@
-#  (2025-01-04)
+#  (2025-01-05)
 
 
 
-# [1.0.0](https://github.com/Gui-Ramos/boilerplate-microservice-spring/compare/c818dd870e60f97af172207e0e9d78ba7bd3673b...1.0.0) (2025-01-04)
+# [1.0.0](https://github.com/Gui-Ramos/boilerplate-microservice-spring/compare/c818dd870e60f97af172207e0e9d78ba7bd3673b...1.0.0) (2025-01-05)
 
 
 ### Bug Fixes
@@ -93,6 +93,7 @@
 * auto versioning with reckon ([9bcc766](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/9bcc7661e6a7c4d1c31797d6c61ad0a7e2f62650))
 * changelog auto generated in pipeline with conventional-changelog-cli ([2f27582](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/2f2758233a65e9eff80ea38bb189f9fbbdef327a))
 * changelog auto generated in pipeline with conventional-changelog-cli ([65475e1](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/65475e18ac3ea23b854ec2c196ed67670d8fe540))
+* generate first final version ([52ff913](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/52ff913fe9cd7f9c275827932cb4da28b5f207a4))
 * modularização do gradle, e implementação de publicação de artefato no maven central repository ([ed8e629](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/ed8e629f95fc446ac102d14a60160707ce9e106d))
 
 
