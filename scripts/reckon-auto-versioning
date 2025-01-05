@@ -1,37 +1,65 @@
 #!/bin/bash
 
-# Obtém a mensagem do último commit
-git fetch origin
+# Identificar a branch atual
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-# Verifica se existem tags
-LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "no-tag")
+echo "Current branch: $CURRENT_BRANCH"
 
-if [ "$LAST_TAG" = "no-tag" ]; then
-  echo "No tags found. Using fallback."
-  LAST_COMMIT_MESSAGE=$(git log --pretty=format:"%s")
+# Obter histórico de commits baseado na branch
+if [ "$CURRENT_BRANCH" = "develop" ]; then
+  echo "Analyzing commits on develop branch..."
+  LAST_TAG=$(git describe --tags --abbrev=0 origin/develop 2>/dev/null || echo "")
+  if [ -z "$LAST_TAG" ]; then
+    echo "No tags found. Listing all commits in develop."
+    COMMITS=$(git log origin/develop --pretty=format:"%s")
+  else
+    COMMITS=$(git log ${LAST_TAG}..origin/develop --pretty=format:"%s")
+  fi
+
+elif [ "$CURRENT_BRANCH" = "release" ]; then
+  echo "Analyzing commits on release branch..."
+  BASE_COMMIT=$(git merge-base origin/develop HEAD)
+  COMMITS=$(git log ${BASE_COMMIT}..HEAD --pretty=format:"%s")
+
+elif [ "$CURRENT_BRANCH" = "main" ]; then
+  echo "Analyzing commits on main branch..."
+
+  # Tentar usar a última tag como referência
+  LAST_TAG=$(git describe --tags --abbrev=0 origin/main 2>/dev/null || echo "")
+
+  if [ -z "$LAST_TAG" ]; then
+    echo "No tags found. Using the merge-base with release as reference."
+    BASE_COMMIT=$(git merge-base origin/release HEAD)
+    COMMITS=$(git log ${BASE_COMMIT}..HEAD --pretty=format:"%s")
+  else
+    echo "Last tag: $LAST_TAG"
+    COMMITS=$(git log ${LAST_TAG}..HEAD --pretty=format:"%s")
+  fi
+
 else
-  LAST_COMMIT_MESSAGE=$(git log ${LAST_TAG}..HEAD --pretty=format:"%s")
+  echo "Unknown branch: $CURRENT_BRANCH. Exiting."
+  exit 1
 fi
 
+# Exibir mensagens de commit
+echo "Commits found:"
+echo "$COMMITS"
 
-echo $LAST_COMMIT_MESSAGE
-
-# Define o escopo com base na mensagem do commit'
-if echo "$LAST_COMMIT_MESSAGE" | grep -q "BREAKING CHANGE"; then
+# Determinar escopo da versão com base nas mensagens de commit
+if echo "$COMMITS" | grep -q "BREAKING CHANGE"; then
   SCOPE=major
-elif echo "$LAST_COMMIT_MESSAGE" | grep -E -q '^.*!'; then
+elif echo "$COMMITS" | grep -E -q '^.*!'; then
   SCOPE=major
-elif echo "$LAST_COMMIT_MESSAGE" | grep -E -q '^(feat)'; then
+elif echo "$COMMITS" | grep -E -q '^(feat)'; then
   SCOPE=minor
-elif echo "$LAST_COMMIT_MESSAGE" | grep -E -q '^(fix)'; then
+elif echo "$COMMITS" | grep -E -q '^(fix)'; then
   SCOPE=patch
 else
   SCOPE=patch
 fi
 
-# Exibe o escopo detectado (para depuração)
+# Exibir escopo determinado
 echo "Determined scope: $SCOPE"
 
-# Exporta o escopo para ser usado no pipeline
+# Exportar o escopo para o GitHub Actions
 echo "SCOPE=$SCOPE" >> $GITHUB_ENV
-
