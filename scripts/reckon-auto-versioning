@@ -4,7 +4,7 @@
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 echo "Current branch: $CURRENT_BRANCH"
 
-# Atualizar todas as branches locais com as remotas
+# Update All Local Branchs
 echo "Fetching updates from origin..."
 git pull origin $CURRENT_BRANCH
 git fetch --tags
