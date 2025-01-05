@@ -6,13 +6,10 @@ echo "Current branch: $CURRENT_BRANCH"
 
 # Atualizar todas as branches locais com as remotas
 echo "Fetching updates from origin..."
-git fetch --all
-git fetch --unshallow
-git fetch --tags
-
-# Resetar a branch local para garantir sincronização com a remota
-#echo "Resetting local branch to match origin..."
-#git reset --hard origin/$CURRENT_BRANCH
+git fetch --all --tags
+git fetch --unshallow || echo "Repository is not shallow."
+git reset --hard origin/$CURRENT_BRANCH
+git pull origin $CURRENT_BRANCH
 
 # Obter histórico de commits baseado na branch
 if [ "$CURRENT_BRANCH" = "develop" ]; then
@@ -22,12 +19,15 @@ if [ "$CURRENT_BRANCH" = "develop" ]; then
     echo "No tags found. Listing all commits in develop."
     COMMITS=$(git log origin/develop --pretty=format:"%s" | tr '\n' '; ')
   else
+    echo "Last tag on develop: $LAST_TAG"
     COMMITS=$(git log ${LAST_TAG}..origin/develop --pretty=format:"%s" | tr '\n' '; ')
   fi
 
 elif [ "$CURRENT_BRANCH" = "release" ]; then
   echo "Analyzing commits on release branch..."
+  git pull origin release
   BASE_COMMIT=$(git merge-base origin/develop HEAD)
+  echo "Base commit between develop and release: $BASE_COMMIT"
   COMMITS=$(git log ${BASE_COMMIT}..HEAD --pretty=format:"%s" | tr '\n' '; ')
 
 elif [ "$CURRENT_BRANCH" = "main" ]; then
@@ -36,9 +36,10 @@ elif [ "$CURRENT_BRANCH" = "main" ]; then
   if [ -z "$LAST_TAG" ]; then
     echo "No tags found. Using the merge-base with release as reference."
     BASE_COMMIT=$(git merge-base origin/release HEAD)
+    echo "Base commit between release and main: $BASE_COMMIT"
     COMMITS=$(git log ${BASE_COMMIT}..HEAD --pretty=format:"%s" | tr '\n' '; ')
   else
-    echo "Last tag: $LAST_TAG"
+    echo "Last tag on main: $LAST_TAG"
     COMMITS=$(git log ${LAST_TAG}..HEAD --pretty=format:"%s" | tr '\n' '; ')
   fi
 else
@@ -53,11 +54,9 @@ echo "$COMMITS"
 # Determinar escopo da versão com base nas mensagens de commit
 if echo "$COMMITS" | grep -q "BREAKING CHANGE"; then
   SCOPE=major
-elif echo "$COMMITS" | grep -E -q '^.*!'; then
-  SCOPE=major
-elif echo "$COMMITS" | grep -E -q '(feat)'; then
+elif echo "$COMMITS" | grep -E -q 'feat(!|:)'; then
   SCOPE=minor
-elif echo "$COMMITS" | grep -E -q '(fix)'; then
+elif echo "$COMMITS" | grep -E -q 'fix(!|:)'; then
   SCOPE=patch
 else
   SCOPE=patch
