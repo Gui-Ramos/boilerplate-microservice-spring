@@ -66,6 +66,5 @@ fi
 # Exibir escopo determinado
 echo "Determined scope: $SCOPE"
 
-
 # Exportar o escopo para o GitHub Actions
 echo "SCOPE=$SCOPE" >> $GITHUB_ENV
