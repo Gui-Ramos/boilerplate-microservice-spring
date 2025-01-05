@@ -55,9 +55,9 @@ if echo "$COMMITS" | grep -q "BREAKING CHANGE"; then
   SCOPE=major
 elif echo "$COMMITS" | grep -E -q '^.*!'; then
   SCOPE=major
-elif echo "$COMMITS" | grep -E -q '^(feat)'; then
+elif echo "$COMMITS" | grep -E -q '(feat)'; then
   SCOPE=minor
-elif echo "$COMMITS" | grep -E -q '^(fix)'; then
+elif echo "$COMMITS" | grep -E -q '(fix)'; then
   SCOPE=patch
 else
   SCOPE=patch
