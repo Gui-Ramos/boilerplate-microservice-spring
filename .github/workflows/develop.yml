@@ -30,9 +30,13 @@ jobs:
       - name: Determine version scope
         run: bash ./scripts/reckon-auto-versioning
 
-      - name: Current Tag
+      - name: Download Tags Locally
         run: |
           git fetch --tags   
+
+      # Verifica se as tags foram baixadas corretamente
+      - name: List tags
+        run: git tag -l  # Isso lista todas as tags
 
       - name: Fetch complete history
         run: |
