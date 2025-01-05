@@ -31,8 +31,6 @@ jobs:
         run: |
           git pull
           git fetch origin
-          git fetch --unshallow
-          git fetch --tags
 
       - name: Determine version scope
         run: bash ./scripts/reckon-auto-versioning
