@@ -5,6 +5,13 @@ CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 echo "Current branch: $CURRENT_BRANCH"
 
+echo "Fetching updates from origin..."
+git fetch --all
+
+# Resetar a branch local para garantir sincronização com a remota
+echo "Resetting local branch to match origin..."
+git reset --hard origin/$CURRENT_BRANCH
+
 # Obter histórico de commits baseado na branch
 if [ "$CURRENT_BRANCH" = "develop" ]; then
   echo "Analyzing commits on develop branch..."
