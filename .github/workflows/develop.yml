@@ -41,6 +41,6 @@ jobs:
 
 
       - name: Publish to GitHub Packages
-        run: ./gradlew clean publish reckonTagPush -Preckon.scope=$SCOPE -Preckon.stage=final
+        run: ./gradlew clean publish reckonTagPush -Preckon.scope=$SCOPE -Preckon.stage=beta
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
