@@ -1,6 +1,7 @@
 package com.microservice.boilerplate.service;
 
-import com.microservice.boilerplate.model.Agendamento;
+import com.microservice.boilerplate.dto.AgendamentoDTO;
+import com.microservice.boilerplate.mapper.AgendamentoMapper;
 import com.microservice.boilerplate.repository.AgendamentoRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,9 @@ public class AgendamentoService {
         this.repository = _repository;
     }
 
-    public List<Agendamento> listarAgendamentos() {
-        return this.repository.findAll();
+    public List<AgendamentoDTO> listarAgendamentos() {
+        return this.repository.findAll().stream()
+                .map(AgendamentoMapper.INSTANCE::toDto)
+                .toList();
     }
 }

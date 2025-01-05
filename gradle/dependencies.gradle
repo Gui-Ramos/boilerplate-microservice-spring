@@ -3,20 +3,40 @@ ext {
 }
 
 dependencies {
+
+    // Spring Dependencies
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
-    implementation 'com.diffplug.spotless:spotless-lib:2.45.0'
-    implementation 'org.postgresql:postgresql:42.7.2'
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
-    liquibaseRuntime 'org.liquibase:liquibase-core:4.23.0'
-    liquibaseRuntime 'info.picocli:picocli:4.7.4'
-    liquibaseRuntime 'org.postgresql:postgresql:42.7.2'
-    compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    annotationProcessor 'org.projectlombok:lombok'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+
+    // Spring Test Dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // Lombook Dependencies
+    implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Utils Dependencies
+    implementation 'org.mapstruct:mapstruct:1.6.3'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+    implementation 'com.diffplug.spotless:spotless-lib:2.45.0'
+    implementation 'org.postgresql:postgresql:42.7.2'
+
+    // Liquibase Dependencies
+    liquibaseRuntime 'org.liquibase:liquibase-core:4.23.0'
+    liquibaseRuntime 'info.picocli:picocli:4.7.4'
+    liquibaseRuntime 'org.postgresql:postgresql:42.7.2'
+
+
+
+
+
+
+
 }

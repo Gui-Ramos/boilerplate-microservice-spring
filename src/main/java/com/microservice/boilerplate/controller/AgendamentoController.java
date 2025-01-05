@@ -1,6 +1,6 @@
 package com.microservice.boilerplate.controller;
 
-import com.microservice.boilerplate.model.Agendamento;
+import com.microservice.boilerplate.dto.AgendamentoDTO;
 import com.microservice.boilerplate.service.AgendamentoService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class AgendamentoController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Agendamento>> listAgendamentos() {
+    public ResponseEntity<List<AgendamentoDTO>> listAgendamentos() {
         return ResponseEntity.ok(service.listarAgendamentos());
     }
 }
