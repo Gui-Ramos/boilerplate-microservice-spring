@@ -3,6 +3,20 @@
 # Obtém a mensagem do último commit
 LAST_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
 
+# Obtém o nome da branch atual
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+echo "Current branch: $CURRENT_BRANCH"
+
+# Obtém a última tag
+LAST_TAG=$(git describe --tags --abbrev=0)
+
+# Obtém os commits desde a última tag
+COMMITS_SINCE_LAST_TAG=$(git log $LAST_TAG..HEAD --oneline)
+
+# Exibe os commits desde a última tag
+echo "Commits since last tag ($LAST_TAG):"
+echo "$COMMITS_SINCE_LAST_TAG"
+
 # Define o escopo com base na mensagem do commit
 if echo "$LAST_COMMIT_MESSAGE" | grep -q "BREAKING CHANGE"; then
   SCOPE=major
