@@ -45,9 +45,9 @@ jobs:
         run: |
           VERSION=$(npx git-semver-tags)
           echo "Determined version: $VERSION"
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
 
       - name: Publish to GitHub Packages
-        run: ./gradlew clean publish reckonTagPush -Preckon.version=$VERSION
+        run: ./gradlew clean publish reckonTagPush -Preckon.version=$VERSION -Preckon.scope=beta
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
