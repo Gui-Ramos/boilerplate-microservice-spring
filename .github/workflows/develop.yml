@@ -40,40 +40,25 @@ jobs:
           git fetch --unshallow
           git fetch --tags
 
-      - name: Set up Node.js
+      - name: Set up Node.js and Install Standard Version
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
-
+          node-version: '16'
       - name: Install dependencies
         run: |
-          npm init -y          
-          npm install lerna -g          
-          npx lerna init          
           npm install
+          npm install --save-dev standard-version
 
-      - name: Configure Lerna for Conventional Commits
+      # 6. Gerar nova versão beta com `standard-version`
+      - name: Bump Beta Version
         run: |
-          # Atualiza lerna.json para usar versionamento baseado em Conventional Commits
-          npx json -I -f lerna.json -e \
-            'this.command = this.command || {}; this.command.version = this.command.version || {}; this.command.version.conventionalCommits = true'
-
-      - name: Fetch complete history and tags
-        run: |
-          git fetch --unshallow
-          git fetch --tags
-
-      - name: Run Lerna versioning
-        id: lerna_version
-        run: |
-          # Calcula a versão baseada em Conventional Commits
-          npx lerna version --conventional-commits --yes --no-push
+          npx standard-version --prerelease beta --release-as minor
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to GitHub Packages
         run: |
-          VERSION=$(node -p "require('./lerna.json').version")
+          VERSION=$(node -p "require('./package.json').version")
           echo "Determined version: $VERSION"
           ./gradlew clean publish reckonTagPush -Preckon.version=$VERSION -Preckon.stage=beta
         env:
