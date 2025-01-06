@@ -53,7 +53,7 @@ jobs:
       # 4. Gerar versão Release Candidate (RC)
       - name: Generate RC Version
         run: |
-          npx release-please github-release --repo-url https://github.com/${{ github.repository }} --release-type 'beta' --bump minor --prerelease --token ${{ secrets.GITHUB_TOKEN }}
+          npx release-please github-release --repo-url https://github.com/${{ github.repository }} --release-type 'beta' --prerelease --token ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to GitHub Packages
         run: |
