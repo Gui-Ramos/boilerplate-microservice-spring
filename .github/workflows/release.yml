@@ -36,13 +36,27 @@ jobs:
           git fetch --unshallow
           git fetch --tags              
 
-      - name: Publish to GitHub Packages
+      - name: Set up Node.js and Install Standard Version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Install dependencies
         run: |
-          VERSION=$(npx git-semver-tags --rc | sort -V | tail -n 1)
-          echo "Determined version: $VERSION"
-          ./gradlew clean publish reckonTagPush -Preckon.version=$VERSION -Preckon.stage=rc
+          npm init -y
+          npm install
+          npm install --save-dev standard-version
+
+      - name: Bump Beta Version
+        run: |
+          npx standard-version --prerelease rc --skip.commit --skip.tag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to GitHub Packages
-        run: ./gradlew clean publish reckonTagPush -Preckon.scope=$SCOPE -Preckon.stage=rc
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "Determined version: $VERSION"
+          ./gradlew clean publish -Pversion=$VERSION
+          git push --tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}

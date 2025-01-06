@@ -57,12 +57,12 @@ java {
     withJavadocJar() // Inclui o Javadoc no pacote
 }
 
-reckon {
-    defaultInferredScope = 'patch'
-    stages 'beta', 'rc', 'final'
-    scopeCalc = calcScopeFromProp()
-    stageCalc = calcStageFromProp()
-}
+//reckon {
+//    defaultInferredScope = 'patch'
+//    stages 'beta', 'rc', 'final'
+//    scopeCalc = calcScopeFromProp()
+//    stageCalc = calcStageFromProp()
+//}
 
 publishing {
     publications {
