@@ -9,6 +9,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
+      pull-requests: write
       contents: write
       actions: write
       packages: write
@@ -53,12 +54,10 @@ jobs:
       # 6. Gerar nova versão beta com `standard-version`
       - name: Bump Beta Version
         run: |
-          npx semantic-release
           VERSION=$(npx semantic-release)
           echo "Determined version: $VERSION"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish to GitHub Packages
         run: |
