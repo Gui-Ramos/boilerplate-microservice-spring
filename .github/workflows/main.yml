@@ -36,27 +36,21 @@ jobs:
           git fetch --unshallow
           git fetch --tags
 
-      - name: Determine version scope
-        run: bash ./scripts/reckon-auto-versioning
+      - name: Set up Node.js and Install Standard Version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          
+      - name: Install dependencies
+        run: |
+          npm init -y
+          npm install
+          npm install --save-dev semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/github
 
-      - name: Publish to GitHub Packages
-        run: ./gradlew clean publish reckonTagPush -Preckon.scope=$SCOPE -Preckon.stage=final
+      # 6. Gerar nova versão beta com `standard-version`
+      - name: Bump Beta Version
+        run: |
+          VERSION=$(npx semantic-release)
+          echo "Determined version: $VERSION"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
-
-
-      - name: Install Conventional Changelog
-        run: npm install -g conventional-changelog-cli
-
-      - name: Configure Git Author
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Generate Changelog
-        run: |
-          git fetch origin
-          npx conventional-changelog -p angular -i CHANGELOG.md -s -r 0
-          git add CHANGELOG.md
-          git commit -m "docs: update changelog"
-          git push origin main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
