@@ -62,5 +62,6 @@ jobs:
           VERSION=$(node -p "require('./package.json').version")
           echo "Determined version: $VERSION"
           ./gradlew clean publish -Pversion=$VERSION
+          git push --tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
