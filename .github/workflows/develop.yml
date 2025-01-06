@@ -40,23 +40,12 @@ jobs:
           git fetch --unshallow
           git fetch --tags
 
-      # Instala semantic-release
-      - name: Install semantic-release
+      - name: Determine version using git-semver-tags
+        id: version
         run: |
-          npm init -y
-          npm install -g semantic-release @semantic-release/git @semantic-release/github @semantic-release/changelog
-
-      # Executa o semantic-release para gerar a versão beta
-      - name: Run semantic-release to determine version
-        id: semantic_release
-        run: |
-          VERSION=$(npx semantic-release --dry-run --branches develop | grep 'nextRelease' -A 1 | tail -n 1 | sed 's/.*"\(.*\)"/\1/')
+          VERSION=$(npx git-semver-tags)
+          echo "Determined version: $VERSION"
           echo "VERSION=$VERSION" >> $GITHUB_ENV
-
-      # Exibe a versão calculada pelo semantic-release
-      - name: Show determined version
-        run: |
-          echo "Calculated version: $VERSION"
 
       - name: Publish to GitHub Packages
         run: ./gradlew clean publish reckonTagPush -Preckon.version=$VERSION
