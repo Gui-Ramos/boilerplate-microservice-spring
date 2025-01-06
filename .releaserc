@@ -2,9 +2,12 @@
   "branches": [
     "main",
     {
+      "name": "release",
+      "prerelease": "rc"
+    },
+    {
       "name": "develop",
-      "channel": "belta",
-      "prerelease": true
+      "prerelease": "beta"
     }
   ],
   "plugins": [
