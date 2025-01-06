@@ -47,18 +47,16 @@ jobs:
           npm install -g semantic-release @semantic-release/git @semantic-release/github @semantic-release/changelog
 
       # Executa o semantic-release para gerar a versão beta
-      - name: Run semantic-release to determine beta version
+      - name: Run semantic-release to determine version
         id: semantic_release
         run: |
-          npx semantic-release --dry-run --branches develop --pre-release beta
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            # Extraímos a versão gerada pelo semantic-release
-
-      - name: Set version for Gradle
-        run: |
-          VERSION=$(npx semantic-release --dry-run --branches develop --pre-release beta | grep 'nextRelease' -A 1 | tail -n 1 | sed 's/.*"\(.*\)"/\1/')
+          VERSION=$(npx semantic-release --dry-run --branches develop | grep 'nextRelease' -A 1 | tail -n 1 | sed 's/.*"\(.*\)"/\1/')
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      # Exibe a versão calculada pelo semantic-release
+      - name: Show determined version
+        run:
+          echo "Calculated version: $VERSION"
 
       - name: Publish to GitHub Packages
         run: ./gradlew clean publish reckonTagPush -Preckon.version=$VERSION
