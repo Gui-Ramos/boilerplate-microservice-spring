@@ -53,7 +53,7 @@ jobs:
       # 6. Gerar nova versão beta com `standard-version`
       - name: Bump Beta Version
         run: |
-          npx semantic-release --branches '["master", "main",{ "name": "develop", "channel": "alpha", "prerelease": true },{ "name": "main", "channel": "latest", stable: true }  ]'
+          npx semantic-release --branches '["main",{ "name": "develop", "channel": "alpha", "prerelease": true }]'
           VERSION=$(npx semantic-release --dry-run)
           echo "Determined version: $VERSION"
         env:
