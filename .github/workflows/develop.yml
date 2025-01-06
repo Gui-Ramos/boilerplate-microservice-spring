@@ -50,7 +50,6 @@ jobs:
           npm install
           npm install --save-dev standard-version
 
-      # 6. Gerar nova versão beta com `standard-version`
       - name: Bump Beta Version
         run: |
           npx standard-version --prerelease beta --skip.commit --skip.tag
