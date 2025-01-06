@@ -50,8 +50,7 @@ jobs:
           npm install
           npm install --save-dev release-please
 
-      # 4. Gerar versão Release Candidate (RC)
-      - name: Generate RC Version
+      - name: Generate Beta Version
         run: |
           npx release-please github-release --repo-url https://github.com/${{ github.repository }} --release-type 'java' --prerelease --token ${{ secrets.GITHUB_TOKEN }}
 
@@ -60,6 +59,7 @@ jobs:
           VERSION=$(node -p "require('./package.json').version")
           echo "Determined version: $VERSION"
           ./gradlew clean publish -Pversion=$VERSION
-          git push --tags
+          git tag -a "$VERSION" -m "Release $VERSION"
+          git push origin "$VERSION"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
