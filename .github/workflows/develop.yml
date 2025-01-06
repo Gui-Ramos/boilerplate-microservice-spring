@@ -61,6 +61,6 @@ jobs:
         run: |
           VERSION=$(node -p "require('./package.json').version")
           echo "Determined version: $VERSION"
-          ./gradlew clean publish reckonTagPush -Preckon.version=$VERSION -Preckon.stage=beta
+          ./gradlew clean publish -Pversion=$VERSION
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
