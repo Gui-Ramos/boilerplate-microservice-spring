@@ -55,7 +55,7 @@ jobs:
 
       # Exibe a versão calculada pelo semantic-release
       - name: Show determined version
-        run:
+        run: |
           echo "Calculated version: $VERSION"
 
       - name: Publish to GitHub Packages
