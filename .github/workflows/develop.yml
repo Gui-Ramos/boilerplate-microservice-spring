@@ -53,7 +53,7 @@ jobs:
       # 6. Gerar nova versão beta com `standard-version`
       - name: Bump Beta Version
         run: |
-          npx standard-version --prerelease beta --release-as minor
+          npx standard-version --prerelease beta --release-as minor --skip.commit
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
