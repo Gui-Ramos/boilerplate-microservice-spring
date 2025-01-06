@@ -53,13 +53,14 @@ jobs:
       # 6. Gerar nova versão beta com `standard-version`
       - name: Bump Beta Version
         run: |
-          npx semantic-release --branches '["master", "main",{ "name": "develop", "channel": "alpha", "prerelease": "alpha" },{ "name": "main", "channel": "latest", stable: true }  ]' --dry-run --branch develop
+          npx semantic-release --branches '["master", "main",{ "name": "develop", "channel": "alpha", "prerelease": true },{ "name": "main", "channel": "latest", stable: true }  ]' --dry-run --branch develop
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish to GitHub Packages
         run: |
+          cat package.json
           VERSION=$(node -p "require('./package.json').version")
           echo "Determined version: $VERSION"
           ./gradlew clean publish -Pversion=$VERSION
