@@ -43,6 +43,7 @@ jobs:
       # Instala semantic-release
       - name: Install semantic-release
         run: |
+          npm init -y
           npm install -g semantic-release @semantic-release/git @semantic-release/github @semantic-release/changelog
 
       # Executa o semantic-release para gerar a versão beta
