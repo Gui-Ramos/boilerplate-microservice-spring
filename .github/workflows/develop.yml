@@ -40,9 +40,33 @@ jobs:
           git fetch --unshallow
           git fetch --tags
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          npm init -y          
+          npm install lerna -g          
+          npx lerna init          
+          npm install
+
+      - name: Configure Lerna for Conventional Commits
+        run: |
+          # Atualiza lerna.json para usar versionamento baseado em Conventional Commits
+          npx json -I -f lerna.json -e \
+            'this.command = this.command || {}; this.command.version = this.command.version || {}; this.command.version.conventionalCommits = true'
+
+      - name: Fetch complete history and tags
+        run: |
+          git fetch --unshallow
+          git fetch --tags
+
       - name: Run Lerna versioning
         id: lerna_version
         run: |
+          # Calcula a versão baseada em Conventional Commits
           npx lerna version --conventional-commits --yes --no-push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
