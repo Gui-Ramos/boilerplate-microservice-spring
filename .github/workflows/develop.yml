@@ -40,9 +40,16 @@ jobs:
           git fetch --unshallow
           git fetch --tags
 
+      - name: Run Lerna versioning
+        id: lerna_version
+        run: |
+          npx lerna version --conventional-commits --yes --no-push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Publish to GitHub Packages
         run: |
-          VERSION=$(npx git-semver-tags | sort -V | tail -n 1)
+          VERSION=$(node -p "require('./lerna.json').version")
           echo "Determined version: $VERSION"
           ./gradlew clean publish reckonTagPush -Preckon.version=$VERSION -Preckon.stage=beta
         env:
