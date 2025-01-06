@@ -48,12 +48,12 @@ jobs:
         run: |
           npm init -y
           npm install
-          npm install --save-dev standard-version
+          npm install --save-dev semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/github
 
       # 6. Gerar nova versão beta com `standard-version`
       - name: Bump Beta Version
         run: |
-          npx standard-version --prerelease beta --skip.commit --skip.tag
+          npx semantic-release --branches 'develop' --prerelease alpha --token ${{ secrets.GITHUB_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -62,6 +62,7 @@ jobs:
           VERSION=$(node -p "require('./package.json').version")
           echo "Determined version: $VERSION"
           ./gradlew clean publish -Pversion=$VERSION
+          git tag -a "$VERSION" -m "Alpha release $VERSION"
           git push --tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
