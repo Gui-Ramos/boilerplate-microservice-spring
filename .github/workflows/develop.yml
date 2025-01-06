@@ -53,7 +53,7 @@ jobs:
       # 6. Gerar nova versão beta com `standard-version`
       - name: Bump Beta Version
         run: |
-          VERSION=$(npx semantic-release --branches '["master", "main",{ "name": "develop", "channel": "alpha", "prerelease": true },{ "name": "main", "channel": "latest", stable: true }  ]' --branch develop --dry-run true)
+          VERSION=$(npx semantic-release --branches '["master", "main",{ "name": "develop", "channel": "alpha", "prerelease": true },{ "name": "main", "channel": "latest", stable: true }  ]' --dry-run)
           echo "Determined version: $VERSION"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
