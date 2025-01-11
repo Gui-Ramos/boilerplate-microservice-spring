@@ -1,15 +1,8 @@
-#  (2025-01-04)
-
-
-### Bug Fixes
-
-* adjusts tag workflow ([90095d3](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/90095d3f6b6e8d816bdc988af421a7e56cae4d8f))
-* include generate release step in dev workflow ([a9d22da](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/a9d22da8a342ddbf1adf44b28bea6da72670847e))
-* tag pipeline ([f324935](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/f324935d4661f1c7f9bd88502643960a35a09cbf))
+#  (2025-01-05)
 
 
 
-## [0.0.1-beta.1](https://github.com/Gui-Ramos/boilerplate-microservice-spring/compare/c818dd870e60f97af172207e0e9d78ba7bd3673b...0.0.1-beta.1) (2025-01-04)
+# [1.0.0](https://github.com/Gui-Ramos/boilerplate-microservice-spring/compare/c818dd870e60f97af172207e0e9d78ba7bd3673b...1.0.0) (2025-01-05)
 
 
 ### Bug Fixes
@@ -22,6 +15,7 @@
 * add git credentials ([ab84b08](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/ab84b08f8ada35787101f159c8ce839b5f58a180))
 * add password as token ([034791a](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/034791a76f263313b5bdb9b707ecc8fae7e1c3b0))
 * add password as token ([32050f0](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/32050f0fb9ddeddbbe777d8ab8a53911d6d01f0b))
+* adjusts tag workflow ([90095d3](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/90095d3f6b6e8d816bdc988af421a7e56cae4d8f))
 * Ajustes lombok e implementação de script pre-commit e commit-msg ([e49b2f0](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/e49b2f0b69e21080f233842ef6874ba9f0a4919f))
 * Alterar gradle para executar installLocalGitHook sempre que o compileJava for executado ([13a3aaf](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/13a3aafa5fb5eac550f59ac3628132a9b4c643a6))
 * Alterar gradle para executar installLocalGitHook sempre que o compileJava for executado ([71ba859](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/71ba859868396444003c27191f664e2d6b785dbb))
@@ -50,6 +44,7 @@
 * git ignore gradlew ([40f35fd](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/40f35fd98e7685a9aa247ed601abb60ddb330c59))
 * git ignore gradlew ([8317a6c](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/8317a6c8cab9495077f26c1a3fcbd2d94958d328))
 * git log before to execute build ([4ab7c7e](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/4ab7c7ec6e308db5820a0b7fdcadcde87424711c))
+* include generate release step in dev workflow ([a9d22da](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/a9d22da8a342ddbf1adf44b28bea6da72670847e))
 * increase patch number test ([23f5557](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/23f555716160c03fad8d0d46496877e7edc866ce))
 * increase patch test ([2feb7ff](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/2feb7ff897e93b588995612a867692ed46855d97))
 * log current tag ([92a184c](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/92a184ceca10f6dd6fe1d4a9e67ce59c6615cd20))
@@ -77,6 +72,7 @@
 * skip test when build wit reckon ([100f10b](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/100f10b27b0f2d73ef03bd994e20619bde3d3417))
 * skip test when build wit reckon ([33ca4a8](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/33ca4a8b2cbe226f6788100ec57625b850163f34))
 * skip test when build wit reckon ([c33eb55](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/c33eb55ca6917f5f909c8b279ad8d55d73984e3a))
+* tag pipeline ([f324935](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/f324935d4661f1c7f9bd88502643960a35a09cbf))
 * update reckon version and adjust pipeline ([d2d3f53](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/d2d3f53f73eecab4e4d817a07fbb5ea974e1c3a7))
 * use gradlew wrapper on git pipeline ([fb4f1ba](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/fb4f1ba8caf80030c084c85de639844fbf884d1c))
 
@@ -97,6 +93,7 @@
 * auto versioning with reckon ([9bcc766](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/9bcc7661e6a7c4d1c31797d6c61ad0a7e2f62650))
 * changelog auto generated in pipeline with conventional-changelog-cli ([2f27582](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/2f2758233a65e9eff80ea38bb189f9fbbdef327a))
 * changelog auto generated in pipeline with conventional-changelog-cli ([65475e1](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/65475e18ac3ea23b854ec2c196ed67670d8fe540))
+* generate first final version ([52ff913](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/52ff913fe9cd7f9c275827932cb4da28b5f207a4))
 * modularização do gradle, e implementação de publicação de artefato no maven central repository ([ed8e629](https://github.com/Gui-Ramos/boilerplate-microservice-spring/commit/ed8e629f95fc446ac102d14a60160707ce9e106d))
 
 
