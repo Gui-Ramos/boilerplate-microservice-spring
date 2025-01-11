@@ -3,7 +3,9 @@ name: Publish Boilerplate Package in Maven Central Repository
 on:
   push:
     branches:
+      - develop
       - release
+      - main
 
 jobs:
   deploy:
@@ -28,20 +30,23 @@ jobs:
           distribution: 'corretto'
           server-id: github
 
-      - name: Current Tag
+      - name: Download Tags Locally
         run: |
-          git fetch --tags
+          git fetch --tags   
+
+      # Verifica se as tags foram baixadas corretamente
+      - name: List tags
+        run: git tag -l  # Isso lista todas as tags
 
       - name: Fetch complete history
         run: |
           git fetch --unshallow
-          git fetch --tags              
+          git fetch --tags
 
       - name: Set up Node.js and Install Standard Version
         uses: actions/setup-node@v3
         with:
           node-version: '20'
-          
       - name: Install dependencies
         run: |
           npm init -y
@@ -56,7 +61,22 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # Check if the tag exists, and skip publish if it does
+      - name: Check if Tag Exists
+        id: check_tag
+        run: |
+          TAG=$(node -p "require('./package.json').version")
+          echo "Checking for tag $TAG"
+          if git rev-parse "refs/tags/$TAG" >/dev/null 2>&1; then
+            echo "Tag $TAG already exists. Skipping publish."
+            echo "skip_publish=true" >> $GITHUB_ENV
+          else
+            echo "Tag $TAG does not exist. Proceeding with publish."
+            echo "skip_publish=false" >> $GITHUB_ENV
+          fi
+
       - name: Publish to GitHub Packages
+        if: env.skip_publish == 'false'
         run: |
           VERSION=$(node -p "require('./package.json').version")
           echo "Determined version: $VERSION"
