@@ -3,14 +3,35 @@
 # Obtém a mensagem do último commit
 LAST_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
 
+# Obtém o nome da branch atual
+
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+echo "Current branch: $CURRENT_BRANCH"
+
+# Tenta obter a última tag
+LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null)
+
+# Se não houver tag, utiliza o primeiro commit
+if [ -z "$LAST_TAG" ]; then
+  echo "No tags found. Using the first commit."
+  LAST_TAG=$(git rev-list --max-parents=0 HEAD)
+fi
+
+# Obtém os commits desde a última tag
+COMMITS_SINCE_LAST_TAG=$(git log $LAST_TAG..HEAD --oneline)
+
+# Exibe os commits desde a última tag
+echo "Commits since last tag ($LAST_TAG):"
+echo "$COMMITS_SINCE_LAST_TAG"
+
 # Define o escopo com base na mensagem do commit
 if echo "$LAST_COMMIT_MESSAGE" | grep -q "BREAKING CHANGE"; then
   SCOPE=major
 elif echo "$LAST_COMMIT_MESSAGE" | grep -E -q '^.*!'; then
   SCOPE=major
-elif echo "$LAST_COMMIT_MESSAGE" | grep -E -q '^(feat|feat!)'; then
+elif echo "$LAST_COMMIT_MESSAGE" | grep -E -q '(feat)'; then
   SCOPE=minor
-elif echo "$LAST_COMMIT_MESSAGE" | grep -E -q '^(fix|fix!)'; then
+elif echo "$LAST_COMMIT_MESSAGE" | grep -E -q '(fix)'; then
   SCOPE=patch
 else
   SCOPE=patch
@@ -19,6 +40,6 @@ fi
 # Exibe o escopo detectado (para depuração)
 echo "Determined scope: $SCOPE"
 
+
 # Exporta o escopo para ser usado no pipeline
 echo "SCOPE=$SCOPE" >> $GITHUB_ENV
-

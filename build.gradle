@@ -6,7 +6,7 @@ plugins {
     id 'com.diffplug.spotless' version '6.25.0'
     id 'maven-publish'
     id 'org.liquibase.gradle' version '2.2.0'
-    id 'org.ajoberstar.reckon' version '0.19.1' // Para versionamento semântico
+//    id 'org.ajoberstar.reckon' version '0.19.1' // Para versionamento semântico
 }
 
 apply from: 'gradle/plugins.gradle'
