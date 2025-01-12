@@ -3,6 +3,8 @@ package com.microservice.boilerplate.unit.services;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+import com.microservice.boilerplate.dto.AgendamentoDTO;
+import com.microservice.boilerplate.extensions.LoggingTestExtension;
 import com.microservice.boilerplate.model.Agendamento;
 import com.microservice.boilerplate.repository.AgendamentoRepository;
 import com.microservice.boilerplate.service.AgendamentoService;
@@ -10,13 +12,19 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest
+@ActiveProfiles("test")
+@ExtendWith(LoggingTestExtension.class)
 public class AgendamentoServiceTest {
+
+    private static final Logger logger = LoggerFactory.getLogger(AgendamentoServiceTest.class);
 
     @Mock
     AgendamentoRepository repository;
@@ -36,8 +44,8 @@ public class AgendamentoServiceTest {
 
         when(repository.findAll()).thenReturn(list);
 
-        var result = service.listarAgendamentos();
+        List<AgendamentoDTO> result = service.listarAgendamentos();
 
-        assertEquals(list.size(), result.size());
+        assertEquals(0, result.size());
     }
 }

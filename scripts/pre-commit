@@ -16,11 +16,9 @@ fi
 
 
 
-echo "*****Running unit tests******"
+echo "*****Running Spotless******"
 
 stash_commit="$(git stash create)"
-#git reset --hard
-
 
 # run spotless apply
 ./gradlew spotlessApply
@@ -46,14 +44,12 @@ else
     exit $status
 fi
 
-./gradlew test
-
 status=$?
 
 if [[ -n "${stash_commit}" ]]
 then git stash apply "${stash_commit}"
 fi
 
-echo "*****Done with unit tests******"
+echo "*****Done Spotless******"
 
 exit $status

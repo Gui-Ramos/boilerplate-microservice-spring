@@ -75,6 +75,10 @@ jobs:
             echo "skip_publish=false" >> $GITHUB_ENV
           fi
 
+      - name: Unit Tests
+        if: env.skip_publish == 'false'
+        run: ./gradlew test
+
       - name: Publish to GitHub Packages
         if: env.skip_publish == 'false'
         run: |
