@@ -32,14 +32,15 @@ public class AlunoServiceTest {
     }
 
     @Test
-    public void listarAlunos_ListaVazia() {
+    @Test
+    public void listarTodos_DeveRetornarListaVazia() {
         when(repository.findAll()).thenReturn(List.of());
-        List<AlunoDTO> result = service.listarAlunos();
+        List<AlunoDTO> result = service.listarTodos();
         assertTrue(result.isEmpty());
     }
 
     @Test
-    public void listarAlunos_ComDados() {
+    public void listarTodos_DeveRetornarAlunos() {
         Endereco endereco = new Endereco();
         endereco.setRua("Rua Teste");
         endereco.setNumero("123");
@@ -71,5 +72,43 @@ public class AlunoServiceTest {
         assertEquals("123", dto.getNumero());
         assertEquals("São Paulo", dto.getCidade());
         assertEquals("SP", dto.getEstado());
+    }
+
+    @Test
+    public void buscarPorId_DeveRetornarAlunoExistente() {
+        UUID id = UUID.randomUUID();
+        Aluno aluno = new Aluno();
+        when(repository.findById(id)).thenReturn(Optional.of(aluno));
+
+        AlunoDTO result = service.buscarPorId(id);
+        assertNotNull(result);
+    }
+
+    @Test
+    public void buscarPorId_DeveLancarExcecaoQuandoNaoExistir() {
+        UUID id = UUID.randomUUID();
+        when(repository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> service.buscarPorId(id));
+    }
+
+    @Test
+    public void criar_DeveSalvarNovoAluno() {
+        AlunoDTO dto = new AlunoDTO();
+        Aluno alunoSalvo = new Aluno();
+        when(repository.save(any(Aluno.class))).thenReturn(alunoSalvo);
+
+        AlunoDTO result = service.criar(dto);
+        assertNotNull(result);
+        verify(repository, times(1)).save(any(Aluno.class));
+    }
+
+    @Test
+    public void deletar_DeveRemoverAlunoExistente() {
+        UUID id = UUID.randomUUID();
+        when(repository.existsById(id)).thenReturn(true);
+
+        service.deletar(id);
+        verify(repository, times(1)).deleteById(id);
     }
 }

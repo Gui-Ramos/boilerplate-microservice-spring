@@ -4,9 +4,12 @@ import com.microservice.boilerplate.dto.AlunoDTO;
 import com.microservice.boilerplate.model.Aluno;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
 @Mapper
 public interface AlunoMapper {
+    AlunoMapper INSTANCE = Mappers.getMapper(AlunoMapper.class);
+
     @Mapping(target = "rua", source = "endereco.rua")
     @Mapping(target = "numero", source = "endereco.numero")
     @Mapping(target = "bairro", source = "endereco.bairro")
