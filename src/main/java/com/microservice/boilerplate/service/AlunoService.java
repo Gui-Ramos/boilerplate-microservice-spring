@@ -101,13 +101,20 @@ public class AlunoService {
             switch (campo) {
                 case "nome" -> aluno.setNome((String) valor);
                 case "email" -> {
-                    if (!((String) valor).contains("@")) {
+                    String email = (String) valor;
+                    if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
                         throw new IllegalArgumentException("Email inválido");
                     }
-                    aluno.setEmail((String) valor);
+                    aluno.setEmail(email);
                 }
                 case "cpf" -> aluno.setCpf((String) valor);
-                case "dataNascimento" -> aluno.setDataNascimento(LocalDate.parse((String) valor));
+                case "dataNascimento" -> {
+                    try {
+                        aluno.setDataNascimento(LocalDate.parse((String) valor));
+                    } catch (Exception e) {
+                        throw new IllegalArgumentException("Data de nascimento inválida. Use o formato AAAA-MM-DD");
+                    }
+                }
                 case "telefone" -> aluno.setTelefone((String) valor);
                 case "rua" -> aluno.getEndereco().setRua((String) valor);
                 case "numero" -> aluno.getEndereco().setNumero((String) valor);

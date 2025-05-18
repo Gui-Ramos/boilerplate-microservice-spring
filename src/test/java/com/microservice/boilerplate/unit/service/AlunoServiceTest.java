@@ -182,6 +182,31 @@ public class AlunoServiceTest {
     }
 
     @Test
+    public void atualizarParcialmente_DeveLancarExcecaoQuandoEmailInvalido() {
+        UUID id = UUID.randomUUID();
+        Aluno alunoExistente = Aluno.builder().build();
+        when(repository.findById(id)).thenReturn(Optional.of(alunoExistente));
+
+        Map<String, Object> campos = Map.of("email", "email-invalido");
+
+        assertThrows(IllegalArgumentException.class, () -> service.atualizarParcialmente(id, campos), "Email inválido");
+    }
+
+    @Test
+    public void atualizarParcialmente_DeveLancarExcecaoQuandoDataNascimentoInvalida() {
+        UUID id = UUID.randomUUID();
+        Aluno alunoExistente = Aluno.builder().build();
+        when(repository.findById(id)).thenReturn(Optional.of(alunoExistente));
+
+        Map<String, Object> campos = Map.of("dataNascimento", "2023/01/01");
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> service.atualizarParcialmente(id, campos),
+                "Data de nascimento inválida");
+    }
+
+    @Test
     public void atualizarParcialmente_DeveLancarExcecaoQuandoValorNulo() {
         UUID id = UUID.randomUUID();
         Aluno alunoExistente = Aluno.builder().build();
