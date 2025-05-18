@@ -2,51 +2,53 @@ package com.microservice.boilerplate.service;
 
 import com.microservice.boilerplate.dto.AlunoDTO;
 import com.microservice.boilerplate.mapper.AlunoMapper;
+import com.microservice.boilerplate.model.Aluno;
 import com.microservice.boilerplate.repository.AlunoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 public class AlunoService {
     private final AlunoRepository repository;
-    private final AlunoMapper mapper;
 
-    public AlunoService(AlunoRepository repository, AlunoMapper mapper) {
+    public AlunoService(AlunoRepository repository) {
         this.repository = repository;
-        this.mapper = mapper;
     }
 
     public List<AlunoDTO> listarTodos() {
-        return repository.findAll().stream().map(mapper::toDto).collect(Collectors.toList());
+        return repository.findAll().stream().map(AlunoMapper.INSTANCE::toDto).collect(Collectors.toList());
     }
 
     public AlunoDTO buscarPorId(UUID id) {
         return repository
                 .findById(id)
-                .map(mapper::toDto)
+                .map(AlunoMapper.INSTANCE::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
     }
 
+    @Transactional
     public AlunoDTO criar(AlunoDTO alunoDTO) {
-        Aluno aluno = mapper.toEntity(alunoDTO);
+        Aluno aluno = AlunoMapper.INSTANCE.fromDto(alunoDTO);
         aluno = repository.save(aluno);
-        return mapper.toDto(aluno);
+        return AlunoMapper.INSTANCE.toDto(aluno);
     }
 
+    @Transactional
     public AlunoDTO atualizar(UUID id, AlunoDTO alunoDTO) {
         Aluno alunoExistente =
                 repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
 
-        mapper.updateEntity(alunoDTO, alunoExistente);
+        // TODO implementar patch update
+        //        mapper.updateEntity(alunoDTO, alunoExistente);
         Aluno alunoAtualizado = repository.save(alunoExistente);
-        return mapper.toDto(alunoAtualizado);
+        return AlunoMapper.INSTANCE.toDto(alunoAtualizado);
     }
 
+    @Transactional
     public void deletar(UUID id) {
         if (!repository.existsById(id)) {
             throw new EntityNotFoundException("Aluno não encontrado");
