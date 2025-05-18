@@ -62,12 +62,20 @@ public class AlunoService {
 
     @Transactional
     public AlunoDTO atualizarParcialmente(UUID id, Map<String, Object> campos) {
+        if (campos == null || campos.isEmpty()) {
+            throw new IllegalArgumentException("Nenhum campo fornecido para atualização");
+        }
+
         Aluno aluno = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
 
         // Validação dos campos
         campos.forEach((campo, valor) -> {
             if (valor == null) {
                 throw new IllegalArgumentException("Valor não pode ser nulo para o campo: " + campo);
+            }
+
+            if (valor instanceof String && ((String) valor).isBlank()) {
+                throw new IllegalArgumentException("Valor não pode ser vazio para o campo: " + campo);
             }
         });
 

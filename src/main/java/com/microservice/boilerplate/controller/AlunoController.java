@@ -55,16 +55,30 @@ public class AlunoController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{path:.*}")
-    public ResponseEntity<AlunoDTO> atualizarParcialmente(
-            @PathVariable UUID id, @RequestBody Map<String, Object> campos, @RequestHeader("If-Match") String eTag) {
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> atualizarParcialmente(
+            @PathVariable UUID id,
+            @RequestBody Map<String, Object> campos,
+            @RequestHeader(value = "If-Match", required = false) String eTag) {
         try {
+            if (campos == null || campos.isEmpty()) {
+                return ResponseEntity.badRequest().body("Nenhum campo fornecido para atualização");
+            }
+
             AlunoDTO alunoAtualizado = service.atualizarParcialmente(id, campos);
-            return ResponseEntity.ok().eTag(eTag).body(alunoAtualizado);
+
+            ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.ok();
+            if (eTag != null) {
+                responseBuilder.eTag(eTag);
+            }
+
+            return responseBuilder.body(alunoAtualizado);
         } catch (EntityNotFoundException ex) {
             return ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
         } catch (Exception ex) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.internalServerError().build();
         }
     }
 }

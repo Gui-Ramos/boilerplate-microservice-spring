@@ -176,6 +176,12 @@ public class AlunoServiceTest {
     }
 
     @Test
+    public void atualizarParcialmente_DeveLancarExcecaoQuandoCamposVazios() {
+        UUID id = UUID.randomUUID();
+        assertThrows(IllegalArgumentException.class, () -> service.atualizarParcialmente(id, Map.of()));
+    }
+
+    @Test
     public void atualizarParcialmente_DeveLancarExcecaoQuandoValorNulo() {
         UUID id = UUID.randomUUID();
         Aluno alunoExistente = Aluno.builder().build();
