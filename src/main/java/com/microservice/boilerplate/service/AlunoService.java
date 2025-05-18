@@ -3,9 +3,13 @@ package com.microservice.boilerplate.service;
 import com.microservice.boilerplate.dto.AlunoDTO;
 import com.microservice.boilerplate.mapper.AlunoMapper;
 import com.microservice.boilerplate.model.Aluno;
+import com.microservice.boilerplate.model.Genero;
+import com.microservice.boilerplate.model.Status;
 import com.microservice.boilerplate.repository.AlunoRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -54,5 +58,32 @@ public class AlunoService {
             throw new EntityNotFoundException("Aluno não encontrado");
         }
         repository.deleteById(id);
+    }
+
+    @Transactional
+    public AlunoDTO atualizarParcialmente(UUID id, Map<String, Object> campos) {
+        Aluno aluno = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
+
+        campos.forEach((campo, valor) -> {
+            switch (campo) {
+                case "nome" -> aluno.setNome((String) valor);
+                case "email" -> aluno.setEmail((String) valor);
+                case "cpf" -> aluno.setCpf((String) valor);
+                case "dataNascimento" -> aluno.setDataNascimento(LocalDate.parse((String) valor));
+                case "telefone" -> aluno.setTelefone((String) valor);
+                case "rua" -> aluno.getEndereco().setRua((String) valor);
+                case "numero" -> aluno.getEndereco().setNumero((String) valor);
+                case "bairro" -> aluno.getEndereco().setBairro((String) valor);
+                case "cidade" -> aluno.getEndereco().setCidade((String) valor);
+                case "estado" -> aluno.getEndereco().setEstado((String) valor);
+                case "cep" -> aluno.getEndereco().setCep((String) valor);
+                case "status" -> aluno.setStatus(Status.valueOf((String) valor));
+                case "matricula" -> aluno.setMatricula((String) valor);
+                case "genero" -> aluno.setGenero(Genero.valueOf((String) valor));
+            }
+        });
+
+        Aluno alunoAtualizado = repository.save(aluno);
+        return AlunoMapper.INSTANCE.toDto(alunoAtualizado);
     }
 }
