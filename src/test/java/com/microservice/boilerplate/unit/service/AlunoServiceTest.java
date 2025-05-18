@@ -40,12 +40,21 @@ public class AlunoServiceTest {
 
     @Test
     public void listarAlunos_ComDados() {
+        Endereco endereco = new Endereco();
+        endereco.setRua("Rua Teste");
+        endereco.setNumero("123");
+        endereco.setBairro("Centro");
+        endereco.setCidade("São Paulo");
+        endereco.setEstado("SP");
+        endereco.setCep("01000-000");
+
         Aluno aluno = Aluno.builder()
                 .nome("João Silva")
                 .email("joao@email.com")
                 .cpf("123.456.789-00")
                 .dataNascimento(LocalDate.of(1990, 1, 1))
                 .telefone("11999999999")
+                .endereco(endereco)
                 .dataCadastro(LocalDateTime.now())
                 .status(Status.ATIVO)
                 .matricula("20230001")
@@ -54,7 +63,13 @@ public class AlunoServiceTest {
 
         when(repository.findAll()).thenReturn(List.of(aluno));
         List<AlunoDTO> result = service.listarAlunos();
+
         assertFalse(result.isEmpty());
-        assertEquals("João Silva", result.get(0).getNome());
+        AlunoDTO dto = result.get(0);
+        assertEquals("João Silva", dto.getNome());
+        assertEquals("Rua Teste", dto.getRua());
+        assertEquals("123", dto.getNumero());
+        assertEquals("São Paulo", dto.getCidade());
+        assertEquals("SP", dto.getEstado());
     }
 }
