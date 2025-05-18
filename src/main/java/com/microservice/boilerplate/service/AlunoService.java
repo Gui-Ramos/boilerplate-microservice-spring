@@ -4,7 +4,11 @@ import com.microservice.boilerplate.dto.AlunoDTO;
 import com.microservice.boilerplate.mapper.AlunoMapper;
 import com.microservice.boilerplate.repository.AlunoRepository;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
