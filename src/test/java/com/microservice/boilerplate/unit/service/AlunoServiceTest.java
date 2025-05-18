@@ -5,13 +5,18 @@ import static org.mockito.Mockito.*;
 
 import com.microservice.boilerplate.dto.AlunoDTO;
 import com.microservice.boilerplate.model.Aluno;
+import com.microservice.boilerplate.model.Endereco;
 import com.microservice.boilerplate.model.Genero;
 import com.microservice.boilerplate.model.Status;
 import com.microservice.boilerplate.repository.AlunoRepository;
 import com.microservice.boilerplate.service.AlunoService;
+import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -63,7 +68,7 @@ public class AlunoServiceTest {
                 .build();
 
         when(repository.findAll()).thenReturn(List.of(aluno));
-        List<AlunoDTO> result = service.listarAlunos();
+        List<AlunoDTO> result = service.listarTodos();
 
         assertFalse(result.isEmpty());
         AlunoDTO dto = result.get(0);
@@ -110,5 +115,117 @@ public class AlunoServiceTest {
 
         service.deletar(id);
         verify(repository, times(1)).deleteById(id);
+    }
+
+    @Test
+    public void atualizarParcialmente_DeveAtualizarCamposInformados() {
+        UUID id = UUID.randomUUID();
+        Aluno alunoExistente = Aluno.builder()
+                .nome("João Original")
+                .email("original@email.com")
+                .build();
+
+        when(repository.findById(id)).thenReturn(Optional.of(alunoExistente));
+        when(repository.save(any(Aluno.class))).thenReturn(alunoExistente);
+
+        Map<String, Object> campos = Map.of(
+                "nome", "João Atualizado",
+                "email", "novo@email.com");
+
+        service.atualizarParcialmente(id, campos);
+
+        assertEquals("João Atualizado", alunoExistente.getNome());
+        assertEquals("novo@email.com", alunoExistente.getEmail());
+    }
+
+    @Test
+    public void atualizarParcialmente_DeveLancarExcecaoQuandoAlunoNaoExistir() {
+        UUID id = UUID.randomUUID();
+        when(repository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> service.atualizarParcialmente(id, Map.of("nome", "Teste")));
+    }
+
+    @Test
+    public void atualizarParcialmente_DeveAtualizarEndereco() {
+        UUID id = UUID.randomUUID();
+        Aluno alunoExistente = Aluno.builder().endereco(new Endereco()).build();
+
+        when(repository.findById(id)).thenReturn(Optional.of(alunoExistente));
+        when(repository.save(any(Aluno.class))).thenReturn(alunoExistente);
+
+        Map<String, Object> campos = Map.of(
+                "rua", "Nova Rua",
+                "numero", "456");
+
+        service.atualizarParcialmente(id, campos);
+
+        assertEquals("Nova Rua", alunoExistente.getEndereco().getRua());
+        assertEquals("456", alunoExistente.getEndereco().getNumero());
+    }
+
+    @Test
+    public void atualizarParcialmente_DeveLancarExcecaoQuandoCampoInvalido() {
+        UUID id = UUID.randomUUID();
+        Aluno alunoExistente = Aluno.builder().build();
+        when(repository.findById(id)).thenReturn(Optional.of(alunoExistente));
+
+        Map<String, Object> campos = Map.of("campoInvalido", "valor");
+
+        assertThrows(IllegalArgumentException.class, () -> service.atualizarParcialmente(id, campos));
+    }
+
+    @Test
+    public void atualizarParcialmente_DeveLancarExcecaoQuandoCamposVazios() {
+        UUID id = UUID.randomUUID();
+        assertThrows(IllegalArgumentException.class, () -> service.atualizarParcialmente(id, Map.of()));
+    }
+
+    @Test
+    public void atualizarParcialmente_DeveLancarExcecaoQuandoEmailInvalido() {
+        UUID id = UUID.randomUUID();
+        Aluno alunoExistente = Aluno.builder().build();
+        when(repository.findById(id)).thenReturn(Optional.of(alunoExistente));
+
+        Map<String, Object> campos = Map.of("email", "email-invalido");
+
+        assertThrows(IllegalArgumentException.class, () -> service.atualizarParcialmente(id, campos), "Email inválido");
+    }
+
+    @Test
+    public void atualizarParcialmente_DeveLancarExcecaoQuandoDataNascimentoInvalida() {
+        UUID id = UUID.randomUUID();
+        Aluno alunoExistente = Aluno.builder().build();
+        when(repository.findById(id)).thenReturn(Optional.of(alunoExistente));
+
+        Map<String, Object> campos = Map.of("dataNascimento", "2023/01/01");
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> service.atualizarParcialmente(id, campos),
+                "Data de nascimento inválida");
+    }
+
+    @Test
+    public void atualizarParcialmente_DeveLancarExcecaoQuandoValorNulo() {
+        UUID id = UUID.randomUUID();
+        Aluno alunoExistente = Aluno.builder().build();
+        when(repository.findById(id)).thenReturn(Optional.of(alunoExistente));
+
+        Map<String, Object> campos = Map.of("nome", null);
+
+        assertThrows(IllegalArgumentException.class, () -> service.atualizarParcialmente(id, campos));
+    }
+
+    @Test
+    public void atualizarParcialmente_DeveAtualizarDataAtualizacao() {
+        UUID id = UUID.randomUUID();
+        Aluno alunoExistente = Aluno.builder().build();
+        when(repository.findById(id)).thenReturn(Optional.of(alunoExistente));
+        when(repository.save(any(Aluno.class))).thenReturn(alunoExistente);
+
+        service.atualizarParcialmente(id, Map.of("nome", "Novo Nome"));
+
+        assertNotNull(alunoExistente.getDataAtualizacao());
     }
 }
