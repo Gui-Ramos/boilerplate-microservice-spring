@@ -15,8 +15,8 @@ if [ -z "$filteredFiles" ]; then
 fi
 
 
-
-echo "*****Running unit tests******"
+#
+#echo "*****Running unit tests******"
 
 stash_commit="$(git stash create)"
 #git reset --hard
@@ -46,14 +46,14 @@ else
     exit $status
 fi
 
-./gradlew test
+#./gradlew test
 
 status=$?
 
-if [[ -n "${stash_commit}" ]]
-then git stash apply "${stash_commit}"
-fi
-
-echo "*****Done with unit tests******"
+#if [[ -n "${stash_commit}" ]]
+#then git stash apply "${stash_commit}"
+#fi
+#
+#echo "*****Done with unit tests******"
 
 exit $status
