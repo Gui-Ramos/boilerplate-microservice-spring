@@ -163,4 +163,38 @@ public class AlunoServiceTest {
         assertEquals("Nova Rua", alunoExistente.getEndereco().getRua());
         assertEquals("456", alunoExistente.getEndereco().getNumero());
     }
+
+    @Test
+    public void atualizarParcialmente_DeveLancarExcecaoQuandoCampoInvalido() {
+        UUID id = UUID.randomUUID();
+        Aluno alunoExistente = Aluno.builder().build();
+        when(repository.findById(id)).thenReturn(Optional.of(alunoExistente));
+
+        Map<String, Object> campos = Map.of("campoInvalido", "valor");
+
+        assertThrows(IllegalArgumentException.class, () -> service.atualizarParcialmente(id, campos));
+    }
+
+    @Test
+    public void atualizarParcialmente_DeveLancarExcecaoQuandoValorNulo() {
+        UUID id = UUID.randomUUID();
+        Aluno alunoExistente = Aluno.builder().build();
+        when(repository.findById(id)).thenReturn(Optional.of(alunoExistente));
+
+        Map<String, Object> campos = Map.of("nome", null);
+
+        assertThrows(IllegalArgumentException.class, () -> service.atualizarParcialmente(id, campos));
+    }
+
+    @Test
+    public void atualizarParcialmente_DeveAtualizarDataAtualizacao() {
+        UUID id = UUID.randomUUID();
+        Aluno alunoExistente = Aluno.builder().build();
+        when(repository.findById(id)).thenReturn(Optional.of(alunoExistente));
+        when(repository.save(any(Aluno.class))).thenReturn(alunoExistente);
+
+        service.atualizarParcialmente(id, Map.of("nome", "Novo Nome"));
+
+        assertNotNull(alunoExistente.getDataAtualizacao());
+    }
 }
