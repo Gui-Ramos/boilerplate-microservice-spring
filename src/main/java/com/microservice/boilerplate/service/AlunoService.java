@@ -64,10 +64,23 @@ public class AlunoService {
     public AlunoDTO atualizarParcialmente(UUID id, Map<String, Object> campos) {
         Aluno aluno = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
 
+        // Validação dos campos
+        campos.forEach((campo, valor) -> {
+            if (valor == null) {
+                throw new IllegalArgumentException("Valor não pode ser nulo para o campo: " + campo);
+            }
+        });
+
+        // Atualização dos campos
         campos.forEach((campo, valor) -> {
             switch (campo) {
                 case "nome" -> aluno.setNome((String) valor);
-                case "email" -> aluno.setEmail((String) valor);
+                case "email" -> {
+                    if (!((String) valor).contains("@")) {
+                        throw new IllegalArgumentException("Email inválido");
+                    }
+                    aluno.setEmail((String) valor);
+                }
                 case "cpf" -> aluno.setCpf((String) valor);
                 case "dataNascimento" -> aluno.setDataNascimento(LocalDate.parse((String) valor));
                 case "telefone" -> aluno.setTelefone((String) valor);
@@ -80,9 +93,11 @@ public class AlunoService {
                 case "status" -> aluno.setStatus(Status.valueOf((String) valor));
                 case "matricula" -> aluno.setMatricula((String) valor);
                 case "genero" -> aluno.setGenero(Genero.valueOf((String) valor));
+                default -> throw new IllegalArgumentException("Campo inválido: " + campo);
             }
         });
 
+        aluno.setDataAtualizacao(LocalDateTime.now());
         Aluno alunoAtualizado = repository.save(aluno);
         return AlunoMapper.INSTANCE.toDto(alunoAtualizado);
     }

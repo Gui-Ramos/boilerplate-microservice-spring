@@ -55,9 +55,16 @@ public class AlunoController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/{path:.*}")
     public ResponseEntity<AlunoDTO> atualizarParcialmente(
-            @PathVariable UUID id, @RequestBody Map<String, Object> campos) {
-        return ResponseEntity.ok(service.atualizarParcialmente(id, campos));
+            @PathVariable UUID id, @RequestBody Map<String, Object> campos, @RequestHeader("If-Match") String eTag) {
+        try {
+            AlunoDTO alunoAtualizado = service.atualizarParcialmente(id, campos);
+            return ResponseEntity.ok().eTag(eTag).body(alunoAtualizado);
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
