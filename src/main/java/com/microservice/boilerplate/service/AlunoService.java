@@ -74,8 +74,25 @@ public class AlunoService {
                 throw new IllegalArgumentException("Valor não pode ser nulo para o campo: " + campo);
             }
 
-            if (valor instanceof String && ((String) valor).isBlank()) {
-                throw new IllegalArgumentException("Valor não pode ser vazio para o campo: " + campo);
+            if (valor instanceof String) {
+                String strValor = (String) valor;
+                if (strValor.isBlank()) {
+                    throw new IllegalArgumentException("Valor não pode ser vazio para o campo: " + campo);
+                }
+
+                // Validação adicional para campos específicos
+                switch (campo) {
+                    case "cpf" -> {
+                        if (!strValor.matches("\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}")) {
+                            throw new IllegalArgumentException("CPF deve estar no formato 999.999.999-99");
+                        }
+                    }
+                    case "cep" -> {
+                        if (!strValor.matches("\\d{5}-\\d{3}")) {
+                            throw new IllegalArgumentException("CEP deve estar no formato 99999-999");
+                        }
+                    }
+                }
             }
         });
 

@@ -56,23 +56,32 @@ public class AlunoController {
     }
 
     @PatchMapping("/{id}")
+    @Operation(
+            summary = "Atualiza parcialmente um aluno",
+            description = "Permite atualizar campos específicos de um aluno")
+    @ApiResponses(
+            value = {
+                @ApiResponse(responseCode = "200", description = "Aluno atualizado com sucesso"),
+                @ApiResponse(responseCode = "400", description = "Dados de entrada inválidos"),
+                @ApiResponse(responseCode = "404", description = "Aluno não encontrado"),
+                @ApiResponse(responseCode = "500", description = "Erro interno")
+            })
     public ResponseEntity<?> atualizarParcialmente(
             @PathVariable UUID id,
-            @RequestBody Map<String, Object> campos,
-            @RequestHeader(value = "If-Match", required = false) String eTag) {
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Mapa de campos para atualização")
+                    @RequestBody
+                    Map<String, Object> campos,
+            @Parameter(description = "ETag para controle de concorrência")
+                    @RequestHeader(value = "If-Match", required = false)
+                    String eTag) {
         try {
             if (campos == null || campos.isEmpty()) {
-                return ResponseEntity.badRequest().body("Nenhum campo fornecido para atualização");
+                return ResponseEntity.badRequest().body(Map.of("message", "Nenhum campo fornecido para atualização"));
             }
 
             AlunoDTO alunoAtualizado = service.atualizarParcialmente(id, campos);
 
-            ResponseEntity.BodyBuilder responseBuilder = ResponseEntity.ok();
-            if (eTag != null) {
-                responseBuilder.eTag(eTag);
-            }
-
-            return responseBuilder.body(alunoAtualizado);
+            return ResponseEntity.ok().eTag(eTag != null ? eTag : "").body(alunoAtualizado);
         } catch (EntityNotFoundException ex) {
             return ResponseEntity.notFound().build();
         } catch (IllegalArgumentException ex) {
