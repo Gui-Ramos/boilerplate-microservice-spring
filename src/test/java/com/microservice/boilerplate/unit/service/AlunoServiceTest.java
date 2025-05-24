@@ -218,6 +218,16 @@ public class AlunoServiceTest {
     }
 
     @Test
+    public void atualizarParcialmente_DeveValidarFormatoCPF() {
+        UUID id = UUID.randomUUID();
+        Aluno aluno = Aluno.builder().build();
+        when(repository.findById(id)).thenReturn(Optional.of(aluno));
+
+        Map<String, Object> camposInvalidos = Map.of("cpf", "12345678900"); // CPF sem formatação
+        assertThrows(IllegalArgumentException.class, () -> service.atualizarParcialmente(id, camposInvalidos));
+    }
+
+    @Test
     public void atualizarParcialmente_DeveAtualizarDataAtualizacao() {
         UUID id = UUID.randomUUID();
         Aluno alunoExistente = Aluno.builder().build();

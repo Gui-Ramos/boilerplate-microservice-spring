@@ -66,7 +66,7 @@ public class AlunoController {
                 @ApiResponse(responseCode = "404", description = "Aluno não encontrado"),
                 @ApiResponse(responseCode = "500", description = "Erro interno")
             })
-    public ResponseEntity<?> atualizarParcialmente(
+    public ResponseEntity<AlunoDTO> atualizarParcialmente(
             @PathVariable UUID id,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Mapa de campos para atualização")
                     @RequestBody

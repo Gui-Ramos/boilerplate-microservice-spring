@@ -68,6 +68,8 @@ public class AlunoService {
 
         Aluno aluno = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
 
+        validarCampos(campos);
+
         // Validação dos campos
         campos.forEach((campo, valor) -> {
             if (valor == null) {
