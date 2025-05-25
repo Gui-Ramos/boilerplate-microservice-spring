@@ -143,7 +143,8 @@ public class AlunoServiceTest {
         UUID id = UUID.randomUUID();
         when(repository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> service.atualizarParcialmente(id, Map.of("nome", "Teste")));
+        AlunoDTO dto = new AlunoDTO();
+        assertThrows(EntityNotFoundException.class, () -> service.atualizarParcialmente(id, dto));
     }
 
     @Test
