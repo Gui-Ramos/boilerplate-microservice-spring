@@ -70,10 +70,7 @@ public class AlunoController {
             @PathVariable UUID id,
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Mapa de campos para atualização")
                     @RequestBody
-                    Map<String, Object> campos,
-            @Parameter(description = "ETag para controle de concorrência")
-                    @RequestHeader(value = "If-Match", required = false)
-                    String eTag) {
+                    Map<String, Object> campos) {
         try {
             if (campos == null || campos.isEmpty()) {
                 return ResponseEntity.badRequest().body(Map.of("message", "Nenhum campo fornecido para atualização"));

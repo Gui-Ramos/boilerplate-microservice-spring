@@ -68,7 +68,19 @@ public class AlunoService {
 
         Aluno aluno = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
 
-        validarCampos(campos);
+        campos.forEach((campo, valor) -> {
+            switch (campo) {
+                case "nome" -> aluno.setNome((String) valor);
+                case "email" -> aluno.setEmail((String) valor);
+                case "cpf" -> aluno.setCpf((String) valor);
+                case "dataNascimento" -> aluno.setDataNascimento(LocalDate.parse((String) valor));
+                case "telefone" -> aluno.setTelephone((String) valor);
+                case "status" -> aluno.setStatus(Status.valueOf((String) valor));
+                case "matricula" -> aluno.setMatricula((String) valor);
+                case "genero" -> aluno.setGenero(Genero.valueOf((String) valor));
+                default -> throw new IllegalArgumentException("Campo inválido: " + campo);
+            }
+        });
 
         // Validação dos campos
         campos.forEach((campo, valor) -> {

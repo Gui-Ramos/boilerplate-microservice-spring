@@ -26,6 +26,28 @@ public class AlunoControllerIT {
         AlunoDTO aluno = new AlunoDTO();
         aluno.setNome("Teste");
         aluno.setEmail("teste@email.com");
+        aluno.setCpf("123.456.789-00");
+
+        ResponseEntity<AlunoDTO> createResponse = restTemplate.postForEntity("/aluno", aluno, AlunoDTO.class);
+        assertEquals(HttpStatus.CREATED, createResponse.getStatusCode());
+
+        UUID id = UUID.fromString(createResponse.getBody().getId());
+
+        // Atualização parcial
+        Map<String, Object> updates = Map.of(
+                "nome", "Nome Atualizado",
+                "email", "novo@email.com");
+
+        ResponseEntity<AlunoDTO> response =
+                restTemplate.exchange("/aluno/" + id, HttpMethod.PATCH, new HttpEntity<>(updates), AlunoDTO.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Nome Atualizado", response.getBody().getNome());
+        assertEquals("novo@email.com", response.getBody().getEmail());
+        // Criar aluno inicial
+        AlunoDTO aluno = new AlunoDTO();
+        aluno.setNome("Teste");
+        aluno.setEmail("teste@email.com");
 
         ResponseEntity<AlunoDTO> createResponse = restTemplate.postForEntity("/aluno", aluno, AlunoDTO.class);
         assertEquals(HttpStatus.CREATED, createResponse.getStatusCode());
