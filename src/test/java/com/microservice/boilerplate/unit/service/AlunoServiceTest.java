@@ -37,7 +37,6 @@ public class AlunoServiceTest {
     }
 
     @Test
-    @Test
     public void listarTodos_DeveRetornarListaVazia() {
         when(repository.findAll()).thenReturn(List.of());
         List<AlunoDTO> result = service.listarTodos();

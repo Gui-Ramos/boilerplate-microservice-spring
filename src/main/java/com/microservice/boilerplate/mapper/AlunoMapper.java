@@ -30,4 +30,9 @@ public interface AlunoMapper {
     @Mapping(target = "dataCadastro", ignore = true)
     @Mapping(target = "dataAtualizacao", ignore = true)
     void updateFromDto(@MappingTarget Aluno entity, AlunoDTO dto);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "dataCadastro", ignore = true)
+    @Mapping(target = "endereco", ignore = true)
+    void updateFieldsFromMap(@MappingTarget Aluno entity, Map<String, Object> fields);
 }

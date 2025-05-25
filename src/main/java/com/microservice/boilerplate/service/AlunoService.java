@@ -3,8 +3,6 @@ package com.microservice.boilerplate.service;
 import com.microservice.boilerplate.dto.AlunoDTO;
 import com.microservice.boilerplate.mapper.AlunoMapper;
 import com.microservice.boilerplate.model.Aluno;
-import com.microservice.boilerplate.model.Genero;
-import com.microservice.boilerplate.model.Status;
 import com.microservice.boilerplate.repository.AlunoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDate;
@@ -68,80 +66,38 @@ public class AlunoService {
 
         Aluno aluno = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
 
-        campos.forEach((campo, valor) -> {
-            switch (campo) {
-                case "nome" -> aluno.setNome((String) valor);
-                case "email" -> aluno.setEmail((String) valor);
-                case "cpf" -> aluno.setCpf((String) valor);
-                case "dataNascimento" -> aluno.setDataNascimento(LocalDate.parse((String) valor));
-                case "telefone" -> aluno.setTelephone((String) valor);
-                case "status" -> aluno.setStatus(Status.valueOf((String) valor));
-                case "matricula" -> aluno.setMatricula((String) valor);
-                case "genero" -> aluno.setGenero(Genero.valueOf((String) valor));
-                default -> throw new IllegalArgumentException("Campo inválido: " + campo);
-            }
-        });
-
-        // Validação dos campos
+        // Valida campos obrigatórios
         campos.forEach((campo, valor) -> {
             if (valor == null) {
                 throw new IllegalArgumentException("Valor não pode ser nulo para o campo: " + campo);
             }
-
-            if (valor instanceof String) {
-                String strValor = (String) valor;
-                if (strValor.isBlank()) {
-                    throw new IllegalArgumentException("Valor não pode ser vazio para o campo: " + campo);
-                }
-
-                // Validação adicional para campos específicos
-                switch (campo) {
-                    case "cpf" -> {
-                        if (!strValor.matches("\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}")) {
-                            throw new IllegalArgumentException("CPF deve estar no formato 999.999.999-99");
-                        }
-                    }
-                    case "cep" -> {
-                        if (!strValor.matches("\\d{5}-\\d{3}")) {
-                            throw new IllegalArgumentException("CEP deve estar no formato 99999-999");
-                        }
-                    }
-                }
+            if (valor instanceof String && ((String) valor).isBlank()) {
+                throw new IllegalArgumentException("Valor não pode ser vazio para o campo: " + campo);
             }
         });
 
-        // Atualização dos campos
-        campos.forEach((campo, valor) -> {
-            switch (campo) {
-                case "nome" -> aluno.setNome((String) valor);
-                case "email" -> {
-                    String email = (String) valor;
-                    if (!email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-                        throw new IllegalArgumentException("Email inválido");
-                    }
-                    aluno.setEmail(email);
-                }
-                case "cpf" -> aluno.setCpf((String) valor);
-                case "dataNascimento" -> {
-                    try {
-                        aluno.setDataNascimento(LocalDate.parse((String) valor));
-                    } catch (Exception e) {
-                        throw new IllegalArgumentException("Data de nascimento inválida. Use o formato AAAA-MM-DD");
-                    }
-                }
-                case "telefone" -> aluno.setTelefone((String) valor);
-                case "rua" -> aluno.getEndereco().setRua((String) valor);
-                case "numero" -> aluno.getEndereco().setNumero((String) valor);
-                case "bairro" -> aluno.getEndereco().setBairro((String) valor);
-                case "cidade" -> aluno.getEndereco().setCidade((String) valor);
-                case "estado" -> aluno.getEndereco().setEstado((String) valor);
-                case "cep" -> aluno.getEndereco().setCep((String) valor);
-                case "status" -> aluno.setStatus(Status.valueOf((String) valor));
-                case "matricula" -> aluno.setMatricula((String) valor);
-                case "genero" -> aluno.setGenero(Genero.valueOf((String) valor));
-                default -> throw new IllegalArgumentException("Campo inválido: " + campo);
+        // Atualiza os campos usando MapStruct
+        AlunoMapper.INSTANCE.updateFieldsFromMap(aluno, campos);
+
+        // Validações específicas para alguns campos
+        if (campos.containsKey("email")
+                && !campos.get("email").toString().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+            throw new IllegalArgumentException("Email inválido");
+        }
+        if (campos.containsKey("cpf") && !campos.get("cpf").toString().matches("\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}")) {
+            throw new IllegalArgumentException("CPF deve estar no formato 999.999.999-99");
+        }
+        if (campos.containsKey("cep") && !campos.get("cep").toString().matches("\\d{5}-\\d{3}")) {
+            throw new IllegalArgumentException("CEP deve estar no formato 99999-999");
+        }
+        if (campos.containsKey("dataNascimento")) {
+            try {
+                aluno.setDataNascimento(
+                        LocalDate.parse(campos.get("dataNascimento").toString()));
+            } catch (Exception e) {
+                throw new IllegalArgumentException("Data de nascimento inválida. Use o formato AAAA-MM-DD");
             }
-        });
+        }
 
         aluno.setDataAtualizacao(LocalDateTime.now());
         Aluno alunoAtualizado = repository.save(aluno);
