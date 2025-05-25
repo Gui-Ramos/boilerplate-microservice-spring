@@ -25,4 +25,9 @@ public interface AlunoMapper {
     @Mapping(target = "endereco.estado", source = "estado")
     @Mapping(target = "endereco.cep", source = "cep")
     Aluno fromDto(AlunoDTO dto);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "dataCadastro", ignore = true)
+    @Mapping(target = "dataAtualizacao", ignore = true)
+    void updateFromDto(@MappingTarget Aluno entity, AlunoDTO dto);
 }

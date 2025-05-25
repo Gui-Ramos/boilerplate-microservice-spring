@@ -128,11 +128,11 @@ public class AlunoServiceTest {
         when(repository.findById(id)).thenReturn(Optional.of(alunoExistente));
         when(repository.save(any(Aluno.class))).thenReturn(alunoExistente);
 
-        Map<String, Object> campos = Map.of(
-                "nome", "João Atualizado",
-                "email", "novo@email.com");
+        AlunoDTO alunoDTO = new AlunoDTO();
+        alunoDTO.setNome("João Atualizado");
+        alunoDTO.setEmail("novo@email.com");
 
-        service.atualizarParcialmente(id, campos);
+        service.atualizarParcialmente(id, alunoDTO);
 
         assertEquals("João Atualizado", alunoExistente.getNome());
         assertEquals("novo@email.com", alunoExistente.getEmail());
