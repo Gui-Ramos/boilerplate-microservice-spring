@@ -93,7 +93,7 @@ public class AlunoServiceTest {
         UUID id = UUID.randomUUID();
         when(repository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> service.buscarPorId(id), "Student not found");
+        assertThrows(EntityNotFoundException.class, () -> service.buscarPorId(id), "Student not found with id: " + id);
     }
 
     @Test

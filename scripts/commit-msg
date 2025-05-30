@@ -5,6 +5,7 @@ echo "***** Conventional Commits Validation ******"
 commit_message=$(cat $1)
 
 if echo "$commit_message" | grep -qE '^(feat!|fix!|feat|fix|docs|style|refactor|perf|test|chore)(\([a-zA-Z0-9_-]+\))?: .+'; then
+
     echo "Mensagem de commit válida (Conventional Commit)."
     exit 0
 fi

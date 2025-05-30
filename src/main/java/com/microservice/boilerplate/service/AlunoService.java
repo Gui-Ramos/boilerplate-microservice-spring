@@ -29,7 +29,7 @@ public class AlunoService {
         return repository
                 .findById(id)
                 .map(AlunoMapper.INSTANCE::toDto)
-                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + id));
     }
 
     @Transactional
