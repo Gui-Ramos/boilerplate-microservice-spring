@@ -29,7 +29,7 @@ public class AlunoService {
         return repository
                 .findById(id)
                 .map(AlunoMapper.INSTANCE::toDto)
-                .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
     }
 
     @Transactional
@@ -53,7 +53,7 @@ public class AlunoService {
     @Transactional
     public void deletar(UUID id) {
         if (!repository.existsById(id)) {
-            throw new EntityNotFoundException("Aluno não encontrado");
+            throw new EntityNotFoundException("Student not found");
         }
         repository.deleteById(id);
     }
@@ -61,7 +61,7 @@ public class AlunoService {
     @Transactional
     public AlunoDTO atualizarParcialmente(UUID id, Map<String, Object> campos) {
         if (campos == null || campos.isEmpty()) {
-            throw new IllegalArgumentException("Nenhum campo fornecido para atualização");
+            throw new IllegalArgumentException("No fields provided for update");
         }
 
         Aluno aluno = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));

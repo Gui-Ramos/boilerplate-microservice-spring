@@ -93,7 +93,7 @@ public class AlunoServiceTest {
         UUID id = UUID.randomUUID();
         when(repository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> service.buscarPorId(id));
+        assertThrows(EntityNotFoundException.class, () -> service.buscarPorId(id), "Student not found");
     }
 
     @Test
@@ -143,7 +143,7 @@ public class AlunoServiceTest {
         when(repository.findById(id)).thenReturn(Optional.empty());
 
         AlunoDTO dto = new AlunoDTO();
-        assertThrows(EntityNotFoundException.class, () -> service.atualizarParcialmente(id, dto));
+        assertThrows(EntityNotFoundException.class, () -> service.atualizarParcialmente(id, dto), "Student not found");
     }
 
     @Test
@@ -203,7 +203,7 @@ public class AlunoServiceTest {
         assertThrows(
                 IllegalArgumentException.class,
                 () -> service.atualizarParcialmente(id, campos),
-                "Data de nascimento inválida");
+                "Invalid birth date");
     }
 
     @Test
