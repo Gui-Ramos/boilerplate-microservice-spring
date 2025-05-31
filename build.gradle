@@ -13,3 +13,10 @@ apply from: 'gradle/plugins.gradle'
 apply from: 'gradle/project-config.gradle'
 apply from: 'gradle/dependencies.gradle'
 apply from: 'gradle/tasks.gradle'
+dependencies {
+    // Outras dependências existentes...
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    implementation 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+}
