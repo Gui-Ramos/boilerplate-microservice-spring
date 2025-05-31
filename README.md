@@ -8,7 +8,7 @@ This project uses **Spring Boot** to build a robust and scalable web application
 
 ---
 
-## 🚀 Tech Stack
+## 🚀 Project Tech Stack
 
 - **Java**: The main programming language for the project.
 - **Spring Boot**:
