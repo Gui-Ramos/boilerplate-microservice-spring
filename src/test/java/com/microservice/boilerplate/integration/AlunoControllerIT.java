@@ -64,12 +64,12 @@ public class AlunoControllerIT {
         assertEquals("Nome Atualizado", response.getBody().getNome());
         assertEquals("novo@email.com", response.getBody().getEmail());
 
-        // Teste com campos inválidos
+        // Teste com email inválido
         Map<String, Object> updatesInvalid = Map.of("email", "email-invalido");
         ResponseEntity<String> errorResponse =
                 restTemplate.exchange("/aluno/" + id, HttpMethod.PATCH, new HttpEntity<>(updatesInvalid), String.class);
 
         assertEquals(HttpStatus.BAD_REQUEST, errorResponse.getStatusCode());
-        assertTrue(errorResponse.getBody().contains("Email inválido"));
+        assertTrue(errorResponse.getBody().contains("Email deve ser válido"));
     }
 }

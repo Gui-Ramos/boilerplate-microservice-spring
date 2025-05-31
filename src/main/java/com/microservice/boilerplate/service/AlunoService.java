@@ -29,7 +29,7 @@ public class AlunoService {
         return repository
                 .findById(id)
                 .map(AlunoMapper.INSTANCE::toDto)
-                .orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException("Student not found with id: " + id));
     }
 
     @Transactional
@@ -53,7 +53,7 @@ public class AlunoService {
     @Transactional
     public void deletar(UUID id) {
         if (!repository.existsById(id)) {
-            throw new EntityNotFoundException("Aluno não encontrado");
+            throw new EntityNotFoundException("Student not found");
         }
         repository.deleteById(id);
     }
@@ -61,43 +61,13 @@ public class AlunoService {
     @Transactional
     public AlunoDTO atualizarParcialmente(UUID id, Map<String, Object> campos) {
         if (campos == null || campos.isEmpty()) {
-            throw new IllegalArgumentException("Nenhum campo fornecido para atualização");
+            throw new IllegalArgumentException("No fields provided for update");
         }
 
         Aluno aluno = repository.findById(id).orElseThrow(() -> new EntityNotFoundException("Aluno não encontrado"));
 
-        // Valida campos obrigatórios
-        campos.forEach((campo, valor) -> {
-            if (valor == null) {
-                throw new IllegalArgumentException("Valor não pode ser nulo para o campo: " + campo);
-            }
-            if (valor instanceof String && ((String) valor).isBlank()) {
-                throw new IllegalArgumentException("Valor não pode ser vazio para o campo: " + campo);
-            }
-        });
-
         // Atualiza os campos usando MapStruct
         AlunoMapper.INSTANCE.updateFieldsFromMap(aluno, campos);
-
-        // Validações específicas para alguns campos
-        if (campos.containsKey("email")
-                && !campos.get("email").toString().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            throw new IllegalArgumentException("Email inválido");
-        }
-        if (campos.containsKey("cpf") && !campos.get("cpf").toString().matches("\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}")) {
-            throw new IllegalArgumentException("CPF deve estar no formato 999.999.999-99");
-        }
-        if (campos.containsKey("cep") && !campos.get("cep").toString().matches("\\d{5}-\\d{3}")) {
-            throw new IllegalArgumentException("CEP deve estar no formato 99999-999");
-        }
-        if (campos.containsKey("dataNascimento")) {
-            try {
-                aluno.setDataNascimento(
-                        LocalDate.parse(campos.get("dataNascimento").toString()));
-            } catch (Exception e) {
-                throw new IllegalArgumentException("Data de nascimento inválida. Use o formato AAAA-MM-DD");
-            }
-        }
 
         aluno.setDataAtualizacao(LocalDateTime.now());
         Aluno alunoAtualizado = repository.save(aluno);
